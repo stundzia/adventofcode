@@ -1,25 +1,36 @@
 package computer
 
-import "log"
+import (
+	"fmt"
+)
+
+const opcodeAddressSpaceSize = 2048
 
 type Computer struct {
-	Opcodes []int
+	Opcodes [opcodeAddressSpaceSize]int
 	InputPipe chan int
 	OutputPipe chan int
 }
 
 func NewComputer(opcodes []int) *Computer {
+	opArray := [opcodeAddressSpaceSize]int{}
+	for i, val := range opcodes {
+		opArray[i] = val
+	}
 	return &Computer{
-		Opcodes:    opcodes,
+		Opcodes:    opArray,
 		InputPipe:  make(chan int),
 		OutputPipe: make(chan int),
 	}
 }
 
-func (c *Computer) Run() int {
+func (c *Computer) Run() (int, error) {
 	position := 0
 	main:
 		for {
+			if position >= len(c.Opcodes) {
+				return 0, NewPositionOutOfRangeError(fmt.Sprintf("position %d is out of range for opcodes with len %d", position, len(c.Opcodes)))
+			}
 			op := c.Opcodes[position]
 			switch op {
 			case 1:
@@ -36,8 +47,8 @@ func (c *Computer) Run() int {
 			case 99:
 				break main
 			default:
-				log.Fatalf("unknown opcode received: %d", op)
+				return 0, NewUnknownOpcodeError(fmt.Sprintf("unknown opcode received: %d", op))
 			}
 		}
-	return c.Opcodes[0]
+	return c.Opcodes[0], nil
 }

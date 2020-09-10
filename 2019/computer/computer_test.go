@@ -10,7 +10,7 @@ func TestComputerBasicRun(t *testing.T) {
 		30,40,50,
 	}
 	comp := NewComputer(opcodes)
-	res := comp.Run()
+	res, _ := comp.Run()
 	if res != 3500 {
 		t.Errorf("incorrect opcode at position 0, expected 3500, but found %d", res)
 	}
