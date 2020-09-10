@@ -6,10 +6,13 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
+type AocSolver = func() string
+
 func ReadInputFileBytes(year int, day int) ([]byte, error) {
-	absPath, err := filepath.Abs(fmt.Sprintf("../%d/day%d/input.txt", year, day))
+	absPath, err := filepath.Abs(fmt.Sprintf("%d/day%d/input.txt", year, day))
 	fileBytes, err := ioutil.ReadFile(absPath)
 	return fileBytes, err
 }
@@ -39,4 +42,19 @@ func ReadInputFileContentsAsIntSlice(year int, day int, sep string) ([]int, erro
 		res[i] = num
 	}
 	return res, err
+}
+
+// SumIntSlice returns the sum of all integers in an integer slice.
+func SumIntSlice(slice []int) int {
+	var res int
+	for _, val := range slice {
+		res += val
+	}
+	return res
+}
+
+func RunWithTimeMetricsAndPrintOutput(solver AocSolver) {
+	start := time.Now()
+	fmt.Println("Solution is: ", solver())
+	fmt.Println("Solution took: ", time.Now().Sub(start))
 }

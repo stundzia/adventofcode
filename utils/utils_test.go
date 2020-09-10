@@ -55,3 +55,32 @@ func TestReadInputFileContentsAsIntSlice(t *testing.T) {
 		}
 	}
 }
+
+func TestSumIntSlice(t *testing.T) {
+	tcs := []struct {
+		testInput    []int
+		expectedOutput int
+	}{
+		{
+			[]int{1,2,3},
+			6,
+		},
+		{
+			[]int{55,77,0,22,0,-20},
+			134,
+		},
+		{
+			[]int{-33,33,44,-44},
+			0,
+		},
+		{
+			[]int{0,0,0,0,0,0,0},
+			0,
+		},
+	}
+	for _, tc := range tcs {
+		if res := SumIntSlice(tc.testInput); res != tc.expectedOutput {
+			t.Errorf("incorrect int slice sum, expected %d, but got %d", tc.expectedOutput, res)
+		}
+	}
+}
