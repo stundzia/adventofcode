@@ -1,0 +1,7 @@
+this is a test file for utils testing
+this one is for testing loading content as a string
+as well as a string slice
+using
+newlines
+as a
+separator
