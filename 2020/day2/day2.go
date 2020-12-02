@@ -43,16 +43,9 @@ func handlePasswordAndPolicy(pp string) bool {
 }
 
 func handlePasswordAndPolicy2(pp string) bool {
-	passPolicy := strings.Split(pp, ": ")
-	policy := passPolicy[0]
-	pass := passPolicy[1]
-	policyMinMaxLetter := strings.Split(policy, " ")
-	letter := policyMinMaxLetter[1]
-	minMax := strings.Split(policyMinMaxLetter[0], "-")
-	min, _ := strconv.Atoi(minMax[0])
-	max, _ := strconv.Atoi(minMax[1])
+	position1, position2, letter, pass := parsePasswordAndPolicy(pp)
 
-	return passValidV2(min, max, letter, pass)
+	return passValidV2(position1, position2, letter, pass)
 }
 
 func DoSilver() string {
