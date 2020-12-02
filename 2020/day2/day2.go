@@ -1,7 +1,6 @@
 package day2
 
 import (
-	"fmt"
 	"github.com/stundzia/adventofcode/utils"
 	"strconv"
 	"strings"
@@ -15,25 +14,32 @@ func passValid(min int, max int, letter string, pass string) bool {
 	return false
 }
 
-func passValidV2(should int, shouldnt int, letter string, pass string) bool {
-	if (string(pass[should - 1]) == letter && string(pass[shouldnt - 1]) != letter) || (string(pass[should - 1]) != letter && string(pass[shouldnt - 1]) == letter) {
+func passValidV2(position1 int, position2 int, letter string, pass string) bool {
+	matchesFirst := string(pass[position1 - 1]) == letter
+	matchesSecond := string(pass[position2 - 1]) == letter
+	if matchesFirst != matchesSecond {
 		return true
 	}
 	return false
 }
 
 
-func handlePasswordAndPolicy(pp string) bool {
+func parsePasswordAndPolicy(pp string) (num1, num2 int, letter, pass string) {
 	passPolicy := strings.Split(pp, ": ")
 	policy := passPolicy[0]
-	pass := passPolicy[1]
+	pass = passPolicy[1]
 	policyMinMaxLetter := strings.Split(policy, " ")
-	letter := policyMinMaxLetter[1]
+	letter = policyMinMaxLetter[1]
 	minMax := strings.Split(policyMinMaxLetter[0], "-")
-	min, _ := strconv.Atoi(minMax[0])
-	max, _ := strconv.Atoi(minMax[1])
+	num1, _ = strconv.Atoi(minMax[0])
+	num2, _ = strconv.Atoi(minMax[1])
+	return num1, num2, letter, pass
+}
 
-	return passValid(min, max, letter, pass)
+
+func handlePasswordAndPolicy(pp string) bool {
+	minPos, maxPos, letter, pass := parsePasswordAndPolicy(pp)
+	return passValid(minPos, maxPos, letter, pass)
 }
 
 func handlePasswordAndPolicy2(pp string) bool {
@@ -51,22 +57,22 @@ func handlePasswordAndPolicy2(pp string) bool {
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 2, "\n")
-	sum := 0
+	validCount := 0
 	for _, i := range input {
 		if handlePasswordAndPolicy(i) {
-			sum++
+			validCount++
 		}
 	}
-	return fmt.Sprintf(strconv.Itoa(sum))
+	return strconv.Itoa(validCount)
 }
 
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 2, "\n")
-	sum := 0
+	validCount := 0
 	for _, i := range input {
 		if handlePasswordAndPolicy2(i) {
-			sum++
+			validCount++
 		}
 	}
-	return fmt.Sprintf(strconv.Itoa(sum))
+	return strconv.Itoa(validCount)
 }
