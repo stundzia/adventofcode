@@ -3,30 +3,19 @@ package day3
 import (
 	"fmt"
 	"github.com/stundzia/adventofcode/utils"
-	"strings"
 )
 
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 3, "\n")
-	for i, inp := range input {
-		input[i] = strings.Repeat(inp, (len(input)/len(inp)) * 4)
-	}
-	mount := Mountain{}
-	mount.ParseMap(input)
-	mount.CurrentPosition = []int{0,0}
+	mount := GetMountainFromMap(input)
 	mount.GoDownToBottom(3, 1)
 	return fmt.Sprintf("%d", mount.TreesEncountered)
 }
 
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 3, "\n")
-	for i, inp := range input {
-		input[i] = strings.Repeat(inp, (len(input)/len(inp)) * 8)
-	}
-	mount := Mountain{}
-	mount.ParseMap(input)
-	mount.CurrentPosition = []int{0,0}
+	mount := GetMountainFromMap(input)
 
 	slopes := [][]int{
 		{1, 1},
