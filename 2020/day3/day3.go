@@ -6,13 +6,6 @@ import (
 	"strings"
 )
 
-func asdf(min int, max int, letter string, pass string) bool {
-	count := strings.Count(pass, letter)
-	if count >= min && count <= max {
-		return true
-	}
-	return false
-}
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 3, "\n")
@@ -22,10 +15,7 @@ func DoSilver() string {
 	mount := Mountain{}
 	mount.ParseMap(input)
 	mount.CurrentPosition = []int{0,0}
-	inMap := true
-	for ;inMap == true; {
-		inMap = mount.GoDownOneLevel(3, 1)
-	}
+	mount.GoDownToBottom(3, 1)
 	return fmt.Sprintf("%d", mount.TreesEncountered)
 }
 
@@ -37,43 +27,25 @@ func DoGold() string {
 	mount := Mountain{}
 	mount.ParseMap(input)
 	mount.CurrentPosition = []int{0,0}
-	inMap := true
-	for ;inMap == true; {
-		inMap = mount.GoDownOneLevel(1, 1)
-	}
-	a := mount.TreesEncountered
-	mount.TreesEncountered = 0
 
-	mount.CurrentPosition = []int{0,0}
-	inMap = true
-	for ;inMap == true; {
-		inMap = mount.GoDownOneLevel(3, 1)
+	slopes := [][]int{
+		{1, 1},
+		{3, 1},
+		{5, 1},
+		{7, 1},
+		{1, 2},
 	}
-	b := mount.TreesEncountered
-	mount.TreesEncountered = 0
+	treeCounts := make([]int, len(slopes))
 
-	mount.CurrentPosition = []int{0,0}
-	inMap = true
-	for ;inMap == true; {
-		inMap = mount.GoDownOneLevel(5, 1)
+	for i, slope := range slopes {
+		mount.GoDownToBottom(slope[0], slope[1])
+		treeCounts[i] = mount.TreesEncountered
+		mount.Reset()
 	}
-	c := mount.TreesEncountered
-	mount.TreesEncountered = 0
 
-	mount.CurrentPosition = []int{0,0}
-	inMap = true
-	for ;inMap == true; {
-		inMap = mount.GoDownOneLevel(7, 1)
+	res := 1
+	for _, tc := range treeCounts {
+		res *= tc
 	}
-	d := mount.TreesEncountered
-	mount.TreesEncountered = 0
-
-	mount.CurrentPosition = []int{0,0}
-	inMap = true
-	for ;inMap == true; {
-		inMap = mount.GoDownOneLevel(1, 2)
-	}
-	e := mount.TreesEncountered
-	mount.TreesEncountered = 0
-	return fmt.Sprintf("%d", a*b*c*d*e)
+	return fmt.Sprintf("%d", res)
 }

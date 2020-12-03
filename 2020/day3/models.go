@@ -30,11 +30,24 @@ func (m *Mountain) GoDownOneLevel(vectorX int, vectorY int) bool {
 	m.CurrentPosition[1] = newY
 	val, ok := m.Grid[fmt.Sprintf("%d-%d", newX, newY)]
 	if !ok {
-		fmt.Println("Trees encountered: ", m.TreesEncountered)
+		fmt.Println("Reached bottom, trees encountered: ", m.TreesEncountered)
 		return false
 	}
 	if val == "#" {
 		m.TreesEncountered++
 	}
 	return true
+}
+
+func (m *Mountain) Reset() {
+	m.TreesEncountered = 0
+	m.CurrentPosition = []int{0,0}
+}
+
+
+func (m *Mountain) GoDownToBottom(vectorX int, vectorY int) {
+	stillOnMountain := true
+	for ;stillOnMountain == true; {
+		stillOnMountain = m.GoDownOneLevel(vectorX, vectorY)
+	}
 }
