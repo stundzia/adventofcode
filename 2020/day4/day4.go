@@ -60,28 +60,19 @@ func fieldValid(field, value string) bool {
 		}
 		return true
 	case "hgt":
-		ln := len(value)
-		if ln > 5 || ln < 4 {
+		re := regexp.MustCompile("^(\\d{2,3})(cm|in)$")
+		res := re.FindAllStringSubmatch(value, -1)
+		if len(res) == 0 {
 			return false
 		}
-		var h int
-		var units string
-		if ln == 4 {
-			hInt, err := strconv.Atoi(value[:2])
-			h = hInt
-			if err != nil {
-				return false
-			}
-			units = value[2:4]
-		} else {
-			hInt, err := strconv.Atoi(value[:3])
-			// TODO: deal with this shit
-			h = hInt
-			if err != nil {
-				return false
-			}
-			units = value[3:5]
+		if len(res[0]) != 3 {
+			return false
 		}
+		h, err := strconv.Atoi(res[0][1])
+		if err != nil {
+			return false
+		}
+		units := res[0][2]
 		if units == "cm" {
 			if h >= 150 && h <= 193 {
 				return true
