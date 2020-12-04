@@ -45,4 +45,3 @@ func TestFieldValid(t *testing.T) {
 		t.Errorf("Expected pid:0123456789 to be invalid")
 	}
 }
-

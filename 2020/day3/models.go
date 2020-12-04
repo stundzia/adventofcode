@@ -6,29 +6,27 @@ import (
 )
 
 type Mountain struct {
-	Grid map[string]string
+	Grid             map[string]string
 	TreesEncountered int
-	CurrentPosition []int
-	MaxX int
+	CurrentPosition  []int
+	MaxX             int
 }
-
 
 func (m *Mountain) ParseMap(mapSlice []string) {
 	grid := make(map[string]string)
 	for y, level := range mapSlice {
 		for x, step := range strings.Split(level, "") {
-			grid[fmt.Sprintf("%d-%d", x,y)] = step
+			grid[fmt.Sprintf("%d-%d", x, y)] = step
 		}
 	}
 	m.Grid = grid
 }
 
-
 func GetMountainFromMap(mapSlice []string) *Mountain {
 	// Assuming width (x) is the same on every level
 	m := &Mountain{
 		TreesEncountered: 0,
-		CurrentPosition:  []int{0,0},
+		CurrentPosition:  []int{0, 0},
 		MaxX:             len(mapSlice[0]) - 1,
 	}
 	m.ParseMap(mapSlice)
@@ -56,13 +54,12 @@ func (m *Mountain) GoDownOneLevel(vectorX int, vectorY int) bool {
 
 func (m *Mountain) Reset() {
 	m.TreesEncountered = 0
-	m.CurrentPosition = []int{0,0}
+	m.CurrentPosition = []int{0, 0}
 }
-
 
 func (m *Mountain) GoDownToBottom(vectorX int, vectorY int) {
 	stillOnMountain := true
-	for ;stillOnMountain == true; {
+	for stillOnMountain == true {
 		stillOnMountain = m.GoDownOneLevel(vectorX, vectorY)
 	}
 }

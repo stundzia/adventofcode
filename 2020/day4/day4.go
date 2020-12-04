@@ -20,15 +20,14 @@ var RequiredFields = map[string]bool{
 }
 
 var eyeColors = map[string]interface{}{
-	"amb": struct {}{},
-	"blu": struct {}{},
-	"brn": struct {}{},
-	"gry": struct {}{},
-	"grn": struct {}{},
-	"hzl": struct {}{},
-	"oth": struct {}{},
+	"amb": struct{}{},
+	"blu": struct{}{},
+	"brn": struct{}{},
+	"gry": struct{}{},
+	"grn": struct{}{},
+	"hzl": struct{}{},
+	"oth": struct{}{},
 }
-
 
 func fieldValid(field, value string) bool {
 	switch field {
@@ -128,7 +127,6 @@ func parsePassportFieldsValid(p string) bool {
 	}
 	return true
 }
-
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 4, "\n")

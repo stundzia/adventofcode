@@ -5,7 +5,6 @@ import (
 	"github.com/stundzia/adventofcode/utils"
 )
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 3, "\n")
 	mount := GetMountainFromMap(input)

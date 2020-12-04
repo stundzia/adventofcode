@@ -15,14 +15,13 @@ func passValid(min int, max int, letter string, pass string) bool {
 }
 
 func passValidV2(position1 int, position2 int, letter string, pass string) bool {
-	matchesFirst := string(pass[position1 - 1]) == letter
-	matchesSecond := string(pass[position2 - 1]) == letter
+	matchesFirst := string(pass[position1-1]) == letter
+	matchesSecond := string(pass[position2-1]) == letter
 	if matchesFirst != matchesSecond {
 		return true
 	}
 	return false
 }
-
 
 func parsePasswordAndPolicy(pp string) (num1, num2 int, letter, pass string) {
 	passPolicy := strings.Split(pp, ": ")
@@ -35,7 +34,6 @@ func parsePasswordAndPolicy(pp string) (num1, num2 int, letter, pass string) {
 	num2, _ = strconv.Atoi(minMax[1])
 	return num1, num2, letter, pass
 }
-
 
 func handlePasswordAndPolicy(pp string) bool {
 	minPos, maxPos, letter, pass := parsePasswordAndPolicy(pp)

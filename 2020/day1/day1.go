@@ -11,7 +11,7 @@ func getProductOfMatchingSumOfTwoItems(intSlice []int, sum int) int {
 			if i == t {
 				continue
 			}
-			if num + num2 == sum {
+			if num+num2 == sum {
 				return num * num2
 			}
 		}
@@ -26,7 +26,7 @@ func getProductOfMatchingSumOfThreeItems(intSlice []int, sum int) int {
 				if i == t || t == z || i == z {
 					continue
 				}
-				if num + num2 + num3 == sum {
+				if num+num2+num3 == sum {
 					return num * num2 * num3
 				}
 			}
