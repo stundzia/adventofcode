@@ -53,6 +53,16 @@ func SumIntSlice(slice []int) int {
 	return res
 }
 
+func SliceStringToInt(slice []string) []int {
+	var res []int
+	for _, val := range slice {
+		v, _ := strconv.Atoi(val)
+		res = append(res, v)
+	}
+	return res
+}
+
+
 func RunWithTimeMetricsAndPrintOutput(solver AocSolver) {
 	start := time.Now()
 	fmt.Println("Solution is: ", solver())
