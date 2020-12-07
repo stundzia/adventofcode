@@ -1,7 +1,6 @@
 package day5
 
 import (
-	"fmt"
 	"github.com/stundzia/adventofcode/utils"
 	"strconv"
 	"strings"
@@ -14,7 +13,6 @@ func parseSeat(seat string) (row, column, seatID int) {
 	row = int(rowInt64)
 
 	columnBi := strings.Replace(seat[7:], "R", "1", -1)
-	fmt.Println(columnBi)
 	columnBi = strings.Replace(columnBi, "L", "0", -1)
 	columnInt64, _ := strconv.ParseInt(columnBi, 2, 64)
 	column = int(columnInt64)
@@ -37,6 +35,17 @@ func DoSilver() string {
 }
 
 func DoGold() string {
+	maxSeatID, _ := strconv.Atoi(DoSilver())
+	seats := map[int]interface{}{}
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 5, "\n")
-	return strconv.Itoa(len(input))
+	for _, seat := range input {
+		_, _, seatID := parseSeat(seat)
+		seats[seatID] = struct {}{}
+	}
+	for i := 40; i < maxSeatID; i++ {
+		if _, ok := seats[i];!ok {
+			return strconv.Itoa(i)
+		}
+	}
+	return "Did not find solution"
 }
