@@ -52,7 +52,7 @@ func DoSilver() string {
 }
 
 
-func runUntilLoopCountReached(instructions []string, change int) (acc int, cleanTerminate bool) {
+func runUntilLoopCountReached(instructions []string, change int, loopCount int) (acc int, cleanTerminate bool) {
 	op, _ := parseInstruction(instructions[change])
 	if op == "nop" {
 		instructions[change] = strings.Replace(instructions[change], "nop", "jmp", 1)
@@ -67,7 +67,7 @@ func runUntilLoopCountReached(instructions []string, change int) (acc int, clean
 			cleanTerminate = true
 			return acc, cleanTerminate
 		}
-		if run, _ := runInstructions[next]; run == 16 {
+		if run, _ := runInstructions[next]; run == loopCount {
 			return -1, false
 		} else {
 			runInstructions[next]++
@@ -80,10 +80,10 @@ func runUntilLoopCountReached(instructions []string, change int) (acc int, clean
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 8, "\n")
 	for i, _ := range input {
-		instructions, _ := utils.ReadInputFileContentsAsStringSlice(2020, 8, "\n")
-		acc, cleanTerminate := runUntilLoopCountReached(instructions, i)
+		instructions := make([]string, len(input))
+		copy(instructions, input)
+		acc, cleanTerminate := runUntilLoopCountReached(instructions, i, 1)
 		if cleanTerminate {
-			fmt.Println(acc, cleanTerminate)
 			return strconv.Itoa(acc)
 		}
 	}
