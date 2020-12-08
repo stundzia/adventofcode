@@ -23,7 +23,7 @@ func parseRule(rule string) (bag string, ruleMap map[string]int) {
 	return topBag, ruleMap
 }
 
-func canContain(ruleMap map[string]map[string]int, bag string, shouldContain string) bool {
+func canContain(ruleMap map[string]map[string]int, bag string, bagToCheck string) bool {
 	allowed := map[string]interface{}{}
 	for k, _ := range ruleMap[bag] {
 		allowed[k] = struct {}{}
@@ -36,7 +36,7 @@ func canContain(ruleMap map[string]map[string]int, bag string, shouldContain str
 			}
 		}
 	}
-	_, ok := allowed[shouldContain]
+	_, ok := allowed[bagToCheck]
 	return ok
 }
 
