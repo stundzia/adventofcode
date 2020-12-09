@@ -1,7 +1,6 @@
 package day9
 
 import (
-	"fmt"
 	"github.com/stundzia/adventofcode/utils"
 	"strconv"
 )
@@ -30,9 +29,6 @@ func contiguousSet(nums []int, n int, invalidNum int) (found bool, set []int) {
 			continue
 		} else {
 			if sum == invalidNum && len(set) > 1 {
-				fmt.Println(set)
-				fmt.Println(sum)
-				fmt.Println(invalidNum)
 				return true, set
 			} else {
 				return false, set
@@ -63,7 +59,7 @@ func DoGold() string {
 			break
 		}
 	}
-	minSet := 9999999
+	minSet := set[0]
 	maxSet := 0
 	for _, num := range set {
 		if num < minSet {
