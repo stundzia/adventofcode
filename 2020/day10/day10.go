@@ -43,12 +43,6 @@ func adapterMapFromInput(input []int) map[int]map[string]int {
 	return adapterMap
 }
 
-func abs(n int) int {
-	if n < 0 {
-		return -n
-	}
-	return n
-}
 
 func adapterMatrixFromInput(input []int) [][]int {
 	sort.Ints(input)
@@ -56,7 +50,7 @@ func adapterMatrixFromInput(input []int) [][]int {
 	for i, x := range input {
 		adapterMatrix[i] = make([]int, len(input))
 		for j, y := range input {
-			if abs(y - x) <= 3 && y > x {
+			if y > x && y - x <= 3 {
 				adapterMatrix[i][j] = 1
 			} else {
 				adapterMatrix[i][j] = 0
