@@ -15,7 +15,7 @@ func parseNavCommand(c string) (direction string, value int) {
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 12, "\n")
-	ship := NewShip(90)
+	ship := NewShip(90, [2]int{0,0})
 	for _, command := range input {
 		dir, val := parseNavCommand(command)
 		ship.HandleNavCommand(dir, val)
