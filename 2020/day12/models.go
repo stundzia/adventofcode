@@ -66,15 +66,37 @@ func (s *Ship) GetDeltaFromHeading() (delta [2]int) {
 	return deltaFromHeading(s.Heading)
 }
 
-func (s *Ship) RotateAroundCenter(degrees int) {
+func rotateCoords(coords [2]int, degrees int) (newCoords [2]int) {
 	if degrees > 0 {
-		switch degrees / 90 % 4 {
-		case 0:
-			return
-		case 1:
-
+		switch degrees {
+		case 90:
+			newCoords[0] = coords[1]
+			newCoords[1] = -coords[0]
+		case 180:
+			newCoords[0] = -coords[0]
+			newCoords[1] = -coords[1]
+		case 270:
+			newCoords[0] = -coords[1]
+			newCoords[1] = coords[0]
+		}
+	} else {
+		switch abs(degrees) {
+		case 90:
+			newCoords[0] = -coords[1]
+			newCoords[1] = coords[0]
+		case 180:
+			newCoords[0] = -coords[0]
+			newCoords[1] = -coords[1]
+		case 270:
+			newCoords[0] = coords[1]
+			newCoords[1] = -coords[0]
 		}
 	}
+	return newCoords
+}
+
+func (s *Ship) RotateAroundCenter(degrees int) {
+	s.Coords = rotateCoords(s.Coords, degrees)
 }
 
 func (s *Ship) HandleNavCommand(direction string, value int)  {
@@ -103,11 +125,17 @@ func (s *Ship) HandleNavCommand(direction string, value int)  {
 func (sn *ShipNav) HandleNavCommand(direction string, value int)  {
 	switch direction {
 	case "L":
-		rot := value / 90 % 2
-		for i := 0; i < rot; i++ {
-			//sn.Waypoint
+		sn.Waypoint.RotateAroundCenter(-value)
+	case "R":
+		sn.Waypoint.RotateAroundCenter(value)
+	case "F":
+		sn.Ship.Coords[0] += sn.Waypoint.Coords[0] * value
+		sn.Ship.Coords[1] += sn.Waypoint.Coords[1] * value
+	default:
+		d := deltaFromDirection(direction)
+		for i, delta := range d {
+			sn.Waypoint.Coords[i] += delta * value
 		}
-
 	}
 }
 
