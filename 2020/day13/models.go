@@ -34,8 +34,8 @@ func NewBusSchedule(buses string) *BusSchedule {
 	return busSchedule
 }
 
-func (b *Bus) GenerateScheduleUntil(timestamp int)  {
-	for i := 0; i < timestamp; i++ {
+func (b *Bus) GenerateSchedule(from int, to int)  {
+	for i := from; i < to; i++ {
 		if i % b.ID == 0 {
 			b.DepartureTimes[i] = struct {}{}
 		}
