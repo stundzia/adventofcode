@@ -1,6 +1,7 @@
 package day13
 
 import (
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -103,8 +104,21 @@ func (bs *BusSchedule) SuggestSequential(start uint64, maxBus int, step uint64) 
 	}
 }
 
-func (bs *BusSchedule) GetDiff(start uint64, maxBus int, step uint64) (uint64, uint64) {
+func (bs *BusSchedule) getFirstSequentialAndDiffToNext(start uint64, maxBus int, step uint64) (uint64, uint64) {
 	t0 := bs.SuggestSequential(start, maxBus, step)
 	t1 := bs.SuggestSequential(t0, maxBus, step)
 	return t0, t1 - t0
+}
+
+func (bs *BusSchedule) GetFirstSequentialTimestamp() uint64 {
+	busSequences := make([]int, 0, len(bs.Buses))
+	for k := range bs.Buses {
+		busSequences = append(busSequences, k)
+	}
+	sort.Ints(busSequences)
+	startFrom, step := bs.getFirstSequentialAndDiffToNext(0, busSequences[0], 1)
+	for i := 1; i < len(busSequences); i++ {
+		startFrom, step = bs.getFirstSequentialAndDiffToNext(startFrom, busSequences[i], step)
+	}
+	return startFrom
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/stundzia/adventofcode/utils"
 	"strconv"
-	"strings"
 )
 
 
@@ -32,9 +31,5 @@ func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 13, "\n")
 	bs := NewBusSchedule(input[1])
 
-	start, diff := bs.GetDiff(0,5, 1)
-	for i := 5; i < len(strings.Split(input[1], ",")); i+=2 {
-		start, diff = bs.GetDiff(start, i, diff)
-	}
-	return fmt.Sprintf("%d", start)
+	return fmt.Sprintf("%d", bs.GetFirstSequentialTimestamp())
 }
