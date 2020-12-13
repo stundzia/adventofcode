@@ -31,28 +31,10 @@ func DoSilver() string {
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 13, "\n")
 	bs := NewBusSchedule(input[1])
-	fmt.Println("len: ", len(strings.Split(input[1], ",")))
-	for sID, b := range bs.Buses {
-		fmt.Println(sID, " : ", b.ID)
-	}
 
-	var res uint64
-	var t uint64
-	start, diff := bs.GetDiff(379523,75, 438857)
-	//start, diff = bs.GetDiff(start, 4, diff)
-	fmt.Println(":ttt: ", start, diff)
-	for t = start; t < 613416286793297; t+=diff {
-		if bs.IsSequentialDepartureBig(t) {
-			fmt.Println(t)
-			fmt.Println("Diff: ", t - res)
-			res = t
-			break
-		}
-		if t % 100000000 == 0 {
-			fmt.Println("Done: ", t)
-			fmt.Println("Assumed %: ", float64(t)/float64(613416286793297) * 100, "%")
-		}
+	start, diff := bs.GetDiff(0,5, 1)
+	for i := 5; i < len(strings.Split(input[1], ",")); i+=2 {
+		start, diff = bs.GetDiff(start, i, diff)
 	}
-	//bs.FindFirstSequentialDeparture()
-	return fmt.Sprintf("%d", res)
+	return fmt.Sprintf("%d", start)
 }
