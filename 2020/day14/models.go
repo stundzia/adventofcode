@@ -73,7 +73,10 @@ func (c *Computer) putToMemoryV2(address int, value int64) {
 
 func power(n int64, pow int) int64 {
 	res := n
-	for i := 0; i < pow; i++ {
+	if pow == 0 {
+		return 1
+	}
+	for i := 1; i < pow; i++ {
 		res *= n
 	}
 	return res
@@ -88,17 +91,24 @@ func (c *Computer) memoryMaskStringToMasks(mStr string) (masks []int64) {
 	bits := []string{"1", "0"}
 	varCount := int(power(2, floatingBitCount))
 	rand.Seed(time.Now().Unix())
-	for i := 0;i < varCount * 500; i++ {
-		m := c.MemoryMask
-		for i := 0; i < floatingBitCount; i++ {
-			m = strings.Replace(m, "X", bits[rand.Intn(len(bits))], 1)
-		}
-		mInt, _ := strconv.ParseInt(m, 2, 64)
-		maskMap[mInt] = struct{}{}
-		if len(maskMap) != varCount {
-			continue
-		} else {
-			break
+	mainLoop:
+	for i := 0;i < varCount; i++ {
+		varLoop:
+		for ;; {
+			m := c.MemoryMask
+			for i := 0; i < floatingBitCount; i++ {
+				m = strings.Replace(m, "X", bits[rand.Intn(len(bits))], 1)
+			}
+			mInt, _ := strconv.ParseInt(m, 2, 64)
+			if len(maskMap) == varCount {
+				break mainLoop
+			}
+			if _, ok := maskMap[mInt]; ok {
+				continue varLoop
+			} else {
+				maskMap[mInt] = struct{}{}
+				break varLoop
+			}
 		}
 	}
 	for mask, _ := range maskMap {
