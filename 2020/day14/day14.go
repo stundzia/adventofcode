@@ -1,6 +1,7 @@
 package day14
 
 import (
+	"fmt"
 	"github.com/stundzia/adventofcode/utils"
 	"strconv"
 )
@@ -8,7 +9,7 @@ import (
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 14, "\n")
-	computer := NewComputer()
+	computer := NewComputer(1)
 	for _, c := range input {
 		computer.parseInputCommand(c)
 	}
@@ -17,5 +18,10 @@ func DoSilver() string {
 
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 14, "\n")
-	return strconv.Itoa(len(input))
+	computer := NewComputer(2)
+	for i, c := range input {
+		computer.parseInputCommand(c)
+		fmt.Println(i, " Done")
+	}
+	return strconv.Itoa(computer.MemorySum())
 }
