@@ -1,6 +1,7 @@
 package day16
 
 import (
+	"github.com/stundzia/adventofcode/utils"
 	"strconv"
 	"strings"
 )
@@ -75,7 +76,7 @@ func (tv *TicketValidator) hasCompletelyInvalidFields(ticket []int) bool {
 		}
 		return true
 	}
-	return true
+	return false
 }
 
 func (tv *TicketValidator) getErrorMetrics() {
@@ -88,4 +89,42 @@ func (tv *TicketValidator) getErrorMetrics() {
 			tv.ErrorRate += errRate
 		}
 	}
+}
+
+
+func (tv *TicketValidator) discardInvalidTicket() bool {
+	for i, ticket := range tv.NearbyTickets {
+		if tv.hasCompletelyInvalidFields(ticket) {
+			tv.NearbyTickets = utils.RemoveFrom2DIntSlice(tv.NearbyTickets, i)
+			return true
+		}
+	}
+	return false
+}
+
+func (tv *TicketValidator) discardInvalidTickets() {
+	discarded := true
+	for ;discarded == true; {
+		discarded = tv.discardInvalidTicket()
+	}
+}
+
+func (tv *TicketValidator) getFieldCandidates(fieldIndex int, ignore []string) (candidates []string) {
+	validityCountMap := map[string]int{}
+	for rule, _ := range tv.Rules {
+		validityCountMap[rule] = 0
+	}
+	for _, ticket := range tv.NearbyTickets {
+		for	rule, _ := range tv.Rules {
+			if tv.fieldValid(rule, ticket[fieldIndex]) {
+				validityCountMap[rule]++
+			}
+		}
+	}
+	for field, val := range validityCountMap {
+		if val == len(tv.NearbyTickets) && !utils.StringSliceContains(ignore, field) {
+			candidates = append(candidates, field)
+		}
+	}
+	return candidates
 }

@@ -121,3 +121,12 @@ func RemoveFrom2DIntSlice(s [][]int, i int) [][]int {
 	s[i] = s[len(s)-1]
 	return s[:len(s)-1]
 }
+
+func StringSliceContains(ss []string, s string) bool {
+	for _, sVal := range ss {
+		if sVal == s {
+			return true
+		}
+	}
+	return false
+}
