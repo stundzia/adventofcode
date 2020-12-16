@@ -60,3 +60,39 @@ func TestSliceStringToInt(t *testing.T) {
 		t.Errorf("converted slice did not match expected")
 	}
 }
+
+
+func TestRotateCoords(t *testing.T) {
+	tcs := []struct{
+		test string
+		X float64
+		Y float64
+		degrees float64
+		newX float64
+		newY float64
+	}{
+		{
+			"10,1 by 90 degrees",
+			10.0,
+			1.0,
+			90.0,
+			1.0,
+			-10.0,
+		},
+		{
+			"-4,5 by 180 degrees",
+			-4.0,
+			5.0,
+			180.0,
+			4.0,
+			-5.0,
+		},
+	}
+	for _, tc := range tcs {
+		t.Run(tc.test, func(t *testing.T) {
+			if newX, newY := RotateCoordinates(tc.X, tc.Y, tc.degrees); newX != tc.newX || newY != tc.newY {
+				t.Errorf("expected new coords to be %f, %f but got %f, %f", tc.newX, tc.newY, newX, newY)
+			}
+		})
+	}
+}

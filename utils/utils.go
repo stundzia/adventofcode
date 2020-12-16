@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"io/ioutil"
+	"math"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -75,8 +76,48 @@ func SlicesIntEqual(a, b []int) bool {
 }
 
 
+func RotateCoordinates(x, y float64, degrees float64) (newX, newY float64) {
+	// y' = y*cos(a) - x*sin(a)
+	// x' = y*sin(a) + x*cos(a)
+	sinA, cosA := math.Sincos(degrees * math.Pi / 180)
+	newY = y * cosA - x * sinA
+	newX = y * sinA + x * cosA
+	return newX, newY
+}
+
 func RunWithTimeMetricsAndPrintOutput(solver AocSolver) {
 	start := time.Now()
 	fmt.Println("Solution is: ", solver())
 	fmt.Println("Solution took: ", time.Now().Sub(start))
+}
+
+func GCD(a, b int) int {
+	for b != 0 {
+		t := b
+		b = a % b
+		a = t
+	}
+	return a
+}
+
+func LCM(a, b int, integers ...int) int {
+	result := a * b / GCD(a, b)
+
+	for i := 0; i < len(integers); i++ {
+		result = LCM(result, integers[i])
+	}
+
+	return result
+}
+
+
+func RemoveFromIntSlice(s []int, i int) []int {
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1]
+}
+
+
+func RemoveFrom2DIntSlice(s [][]int, i int) [][]int {
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1]
 }
