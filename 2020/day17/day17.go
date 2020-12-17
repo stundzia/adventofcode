@@ -8,7 +8,7 @@ import (
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 17, "\n")
-	pd := NewPockedDimensionFromInitialStateSlice(input)
+	pd := NewPockedDimensionFromInitialStateSlice(input, 3)
 	activeCount := 0
 	for i := 0; i < 6; i++ {
 		pd.DoCycle()
@@ -19,11 +19,12 @@ func DoSilver() string {
 
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 17, "\n")
-	pd := NewPockedDimensionFromInitialStateSlice(input)
+	pd := NewPockedDimensionFromInitialStateSlice(input, 4)
+	pd.Get4DActiveCount()
 	activeCount := 0
 	for i := 0; i < 6; i++ {
-		pd.DoCycle()
-		activeCount = pd.GetActiveCount()
+		pd.Do4DCycle()
+		activeCount = pd.Get4DActiveCount()
 	}
 	return fmt.Sprintf("%d", activeCount)
 }
