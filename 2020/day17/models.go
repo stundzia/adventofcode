@@ -29,6 +29,9 @@ func NewPockedDimensionFromInitialStateSlice(stateString []string, dimensions in
 				}
 			}
 		}
+		for _, cube := range pd.Cubes4D {
+			cube.GetNeighbours4D()
+		}
 	} else {
 		for y, line := range stateString {
 			for x, val := range line {
@@ -39,15 +42,15 @@ func NewPockedDimensionFromInitialStateSlice(stateString []string, dimensions in
 				}
 			}
 		}
+		for _, cube := range pd.Cubes {
+			cube.GetNeighbours()
+		}
 	}
 	return pd
 }
 
 
 func (pd *PocketDimension) DoCycle() {
-	for _, cube := range pd.Cubes {
-		cube.GetNeighbours()
-	}
 	cubes := []*Cube{}
 	makeActive := []int{}
 	makeInactive := []int{}
@@ -74,9 +77,6 @@ func (pd *PocketDimension) DoCycle() {
 }
 
 func (pd *PocketDimension) Do4DCycle() {
-	for _, cube := range pd.Cubes4D {
-		cube.GetNeighbours4D()
-	}
 	cubes := []*Cube{}
 	makeActive := []int{}
 	makeInactive := []int{}

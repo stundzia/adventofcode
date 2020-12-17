@@ -20,7 +20,6 @@ func DoSilver() string {
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 17, "\n")
 	pd := NewPockedDimensionFromInitialStateSlice(input, 4)
-	pd.Get4DActiveCount()
 	activeCount := 0
 	for i := 0; i < 6; i++ {
 		pd.Do4DCycle()
