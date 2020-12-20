@@ -130,3 +130,39 @@ func StringSliceContains(ss []string, s string) bool {
 	}
 	return false
 }
+
+func ReverseString(s string) string {
+	newS := ""
+	for i := len(s) - 1; i >= 0; i-- {
+		newS += string(s[i])
+	}
+	return newS
+}
+
+func ReverseStringSlice(s []string) []string {
+	newS := []string{}
+	for i := len(s) - 1; i >= 0; i-- {
+		newS = append(newS, s[i])
+	}
+	return newS
+}
+
+func ReverseStringSliceSlice(ss [][]string) [][]string {
+	newS := [][]string{}
+	for i := len(ss) - 1; i >= 0; i-- {
+		newS = append(newS, ss[i])
+	}
+	return newS
+}
+
+func SlicesStringEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
+}
