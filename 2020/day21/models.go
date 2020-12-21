@@ -73,6 +73,7 @@ func (m *Menu) countUnmappedIngredients() int {
 	for _, mi := range m.Items {
 		for ing, _ := range mi.ingredients {
 			if _, ok := m.CanBeAllergensMap[ing]; !ok {
+				m.InertIngredientsMap[ing] = struct{}{}
 				count++
 			}
 		}
@@ -164,16 +165,13 @@ func (m *Menu) formIngredientAllergenMaps() {
 	}
 	for _, mi := range m.Items {
 		mi.updateAllergenMustBeInIngredientsMap()
-		fmt.Println(m.AllergenMustBeInIngredientsMap)
 	}
-	fmt.Println("asdfg: ", m.AllergenMustBeInIngredientsMap)
 	for i := 0; i < 2; i++ {
 		m.updateIngredientsAllergensMap()
 		for _, mi := range m.Items {
 			mi.updateAllergenMustBeInIngredientsMap()
 		}
 	}
-	fmt.Println("FFFFFIIINAAAL: ", m.AllergenMustBeInIngredientsMap)
 	for _, ingMap := range m.AllergenMustBeInIngredientsMap {
 		for ing, _ := range ingMap {
 			m.CanBeAllergensMap[ing] = struct{}{}
