@@ -9,7 +9,6 @@ type Game struct {
 	Deck2 *Deck
 	PlayedConfigs map[string]struct{}
 	SubgamesEnabled bool
-	IsSubgame bool
 }
 
 type Deck struct {
@@ -49,13 +48,12 @@ func newDeck(cards []int) *Deck {
 }
 
 
-func NewGame(player1 []int, player2 []int, subgamesEnabled, isSubgame bool) *Game {
+func NewGame(player1 []int, player2 []int, subgamesEnabled bool) *Game {
 	g := &Game{
 		Deck1: newDeck(player1),
 		Deck2: newDeck(player2),
 		PlayedConfigs: map[string]struct{}{},
 		SubgamesEnabled: subgamesEnabled,
-		IsSubgame: isSubgame,
 
 	}
 	return g
@@ -137,7 +135,7 @@ func (g *Game) PlayRound() (bool, int) {
 	card1, card2 := g.Deck1.removeTopCard(), g.Deck2.removeTopCard()
 
 	if g.SubgamesEnabled && g.Deck1.CardCount >= card1.Value && g.Deck2.CardCount >= card2.Value {
-		subgame := NewGame(g.Deck1.getCardValueSlice(card1.Value), g.Deck2.getCardValueSlice(card2.Value), true, true)
+		subgame := NewGame(g.Deck1.getCardValueSlice(card1.Value), g.Deck2.getCardValueSlice(card2.Value), true)
 		var roundWinner int
 		var gg bool
 		for ;gg != true; {
