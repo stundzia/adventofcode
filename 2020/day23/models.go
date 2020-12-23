@@ -4,6 +4,8 @@ import "fmt"
 
 type CupGame struct {
 	CurrentCup *Cup
+	MaxLabel int
+	LabelMap map[int]*Cup
 }
 
 
@@ -14,13 +16,20 @@ type Cup struct {
 
 
 func NewCupGame(cupLabels []int) *CupGame {
-	cg := &CupGame{}
+	cg := &CupGame{
+		LabelMap: map[int]*Cup{},
+	}
 	cups := []*Cup{}
 	for _, cl := range cupLabels {
-		cups = append(cups, &Cup{
+		cup := &Cup{
 			Next:     nil,
 			Label:    cl,
-		})
+		}
+		cups = append(cups, cup)
+		cg.LabelMap[cl] = cup
+		if cl > cg.MaxLabel {
+			cg.MaxLabel = cl
+		}
 	}
 	for i, cup := range cups {
 		if i == len(cups) - 1 {
@@ -33,41 +42,45 @@ func NewCupGame(cupLabels []int) *CupGame {
 	return cg
 }
 
-func (cg *CupGame) getDestinationCup() *Cup {
+func (cg *CupGame) getDestinationCup(pickedLabels [3]int) *Cup {
 	label := cg.CurrentCup.Label - 1
+	MainLoop:
 	for ;label > 0; label-- {
-		for cc := cg.CurrentCup.Next;cc != cg.CurrentCup; {
-			if cc.Label == label {
-				return cc
+		for _, pl := range pickedLabels {
+			if label == pl {
+				continue MainLoop
 			}
-			cc = cc.Next
 		}
+		return cg.LabelMap[label]
 	}
-	maxLabel := cg.CurrentCup.Label
-	maxLabelCup := cg.CurrentCup
-	for cc := cg.CurrentCup.Next; cc != cg.CurrentCup; {
-		if cc.Label > maxLabel {
-			maxLabel = cc.Label
-			maxLabelCup = cc
+	label = cg.MaxLabel
+	MaxLabelLoop:
+	for ;label > 0; label-- {
+		for _, pl := range pickedLabels {
+			if label == pl {
+				continue MaxLabelLoop
+			}
 		}
-		cc = cc.Next
+		return cg.LabelMap[label]
 	}
-	return maxLabelCup
+	return nil
 }
 
 
 func (cg *CupGame) doMove() {
-	cups := []*Cup{}
+	takenCups := []*Cup{}
 	currentCup := cg.CurrentCup
+	takenLabels := [3]int{}
 	for i := 0; i < 3; i++ {
-		cups = append(cups, currentCup.Next)
+		takenCups = append(takenCups, currentCup.Next)
+		takenLabels[i] = currentCup.Next.Label
 		currentCup = currentCup.Next
 	}
-	cg.CurrentCup.Next = cups[len(cups) - 1].Next
-	cups[len(cups) - 1].Next = nil
-	destCup := cg.getDestinationCup()
-	cups[len(cups) - 1].Next = destCup.Next
-	destCup.Next = cups[0]
+	cg.CurrentCup.Next = takenCups[len(takenCups) - 1].Next
+	takenCups[len(takenCups) - 1].Next = nil
+	destCup := cg.getDestinationCup(takenLabels)
+	takenCups[len(takenCups) - 1].Next = destCup.Next
+	destCup.Next = takenCups[0]
 	cg.CurrentCup = cg.CurrentCup.Next
 }
 
@@ -89,15 +102,8 @@ func (cg *CupGame) PrintCups() {
 	fmt.Printf("\n")
 }
 
-func (cg *CupGame) PrintPart2Res() {
-	cc := cg.CurrentCup
-	cc = cc.Next
-	for ; cc != cg.CurrentCup; {
-		if cc.Label == 1 {
-			fmt.Println("Result: ")
-			fmt.Println(cc.Next.Label)
-			fmt.Println(cc.Next.Next.Label)
-		}
-		cc = cc.Next
-	}
+func (cg *CupGame) GetPart2Res() int {
+	fmt.Println(cg.LabelMap[1].Next.Label)
+	fmt.Println(cg.LabelMap[1].Next.Next.Label)
+	return cg.LabelMap[1].Next.Label * cg.LabelMap[1].Next.Next.Label
 }
