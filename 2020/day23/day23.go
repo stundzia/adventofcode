@@ -18,10 +18,17 @@ func DoSilver() string {
 
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsIntSlice(2020, 23, "")
-	cg := NewCupGame(input)
-	for i := 0; i < 100; i++ {
-		cg.doMove()
+	n := utils.GetMaxFromIntSlice(input)
+	for ;len(input) < 1000000; n++ {
+		input = append(input, n)
 	}
-	cg.PrintCups()
+	cg := NewCupGame(input)
+	for i := 0; i < 10000000; i++ {
+		cg.doMove()
+		if i % 10000 == 0 {
+			fmt.Println("moves done: ", i)
+		}
+	}
+	cg.PrintPart2Res()
 	return fmt.Sprintf("%d", len(input))
 }

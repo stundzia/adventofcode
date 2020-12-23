@@ -9,7 +9,6 @@ type CupGame struct {
 
 type Cup struct {
 	Next *Cup
-	Previous *Cup
 	Label int
 }
 
@@ -20,16 +19,10 @@ func NewCupGame(cupLabels []int) *CupGame {
 	for _, cl := range cupLabels {
 		cups = append(cups, &Cup{
 			Next:     nil,
-			Previous: nil,
 			Label:    cl,
 		})
 	}
 	for i, cup := range cups {
-		if i == 0 {
-			cup.Previous = cups[len(cups) - 1]
-		} else {
-			cup.Previous = cups[i - 1]
-		}
 		if i == len(cups) - 1 {
 			cup.Next = cups[0]
 		} else {
@@ -70,30 +63,20 @@ func (cg *CupGame) doMove() {
 		cups = append(cups, currentCup.Next)
 		currentCup = currentCup.Next
 	}
-	fmt.Println("Picked up: ", cups[0].Label, cups[1].Label, cups[2].Label)
-	cups[0].Previous = nil
 	cg.CurrentCup.Next = cups[len(cups) - 1].Next
-	cg.CurrentCup.Next.Previous = cg.CurrentCup
-	cups[len(cups) - 1].Next.Previous = cg.CurrentCup
 	cups[len(cups) - 1].Next = nil
-	cg.PrintCups()
 	destCup := cg.getDestinationCup()
-	fmt.Println("destination: ", destCup.Label)
-	destCup.Next.Previous = cups[len(cups) - 1]
 	cups[len(cups) - 1].Next = destCup.Next
 	destCup.Next = cups[0]
-	cups[0].Previous = destCup
 	cg.CurrentCup = cg.CurrentCup.Next
-	cg.PrintCups()
-	fmt.Println("cc: ", cg.CurrentCup.Label)
 }
 
 func (cg *CupGame) PrintCups() {
 	cc := cg.CurrentCup
-	fmt.Printf(" %d <- %d -> %d ", cc.Previous.Label, cc.Label, cc.Next.Label)
+	fmt.Printf(" %d -> %d ", cc.Label, cc.Next.Label)
 	cc = cc.Next
 	for ; cc != cg.CurrentCup; {
-		fmt.Printf(" %d <- %d -> %d ", cc.Previous.Label, cc.Label, cc.Next.Label)
+		fmt.Printf(" %d -> %d ", cc.Label, cc.Next.Label)
 		cc = cc.Next
 	}
 	cc = cg.CurrentCup
