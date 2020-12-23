@@ -12,8 +12,7 @@ func DoSilver() string {
 	for i := 0; i < 100; i++ {
 		cg.doMove()
 	}
-	cg.PrintCups()
-	return fmt.Sprintf("%d", len(input))
+	return cg.GetPart1Res()
 }
 
 func DoGold() string {
@@ -25,10 +24,6 @@ func DoGold() string {
 	cg := NewCupGame(input)
 	for i := 0; i < 10000000; i++ {
 		cg.doMove()
-		if i % 1000000 == 0 {
-			fmt.Println("moves done: ", i)
-		}
 	}
-	// 921194976570 is too high
 	return fmt.Sprintf("%d", cg.GetPart2Res())
 }

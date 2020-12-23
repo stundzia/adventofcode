@@ -1,6 +1,9 @@
 package day23
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type CupGame struct {
 	CurrentCup *Cup
@@ -103,7 +106,14 @@ func (cg *CupGame) PrintCups() {
 }
 
 func (cg *CupGame) GetPart2Res() int {
-	fmt.Println(cg.LabelMap[1].Next.Label)
-	fmt.Println(cg.LabelMap[1].Next.Next.Label)
 	return cg.LabelMap[1].Next.Label * cg.LabelMap[1].Next.Next.Label
+}
+
+func (cg *CupGame) GetPart1Res() string {
+	res := ""
+	cup := cg.LabelMap[1].Next
+	for ; cup != cg.LabelMap[1]; cup = cup.Next {
+		res += strconv.Itoa(cup.Label)
+	}
+	return res
 }
