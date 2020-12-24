@@ -1,7 +1,5 @@
 package day24
 
-import "fmt"
-
 type Floor struct {
 	RefTile *Tile
 	TilesMap map[[2]int]*Tile
@@ -29,16 +27,6 @@ var CoordsDiffMap = map[string][2]int {
 	"nw": {-1,1},
 	"se": {1,-1},
 	"sw": {-1,-1},
-}
-
-func (t *Tile) Flip() {
-	t.Black = !t.Black
-	if t.Black {
-		t.OnFloor.BlackTileCount++
-	} else {
-		t.OnFloor.BlackTileCount--
-	}
-	fmt.Printf("Flipped: %v\n", t.Coords)
 }
 
 
@@ -69,6 +57,44 @@ func (f *Floor) TraverseTiles(path string) *Tile {
 	return currentTile
 }
 
+func (t *Tile) GenerateAdjacent() {
+	coords := t.Coords
+	for _, diff := range CoordsDiffMap {
+		t.OnFloor.GetOrCreateTile([2]int{coords[0] + diff[0], coords[1] + diff[1]})
+	}
+}
+
+func (f *Floor) GenerateAdjacent() {
+	for _, tile := range f.TilesMap {
+		tile.GenerateAdjacent()
+	}
+}
+
+func (f *Floor) DoArtsyFartsyFlip() {
+	toBeFlipped := []*Tile{}
+	for _, tile := range f.TilesMap {
+		black := tile.Black
+		adjBlack := tile.GetAdjacentBlackCount()
+		if (black && (adjBlack == 0 || adjBlack > 2)) || (!black && adjBlack == 2) {
+			toBeFlipped = append(toBeFlipped, tile)
+		}
+	}
+	for _, t := range toBeFlipped {
+		t.Flip()
+	}
+}
+
+func (t *Tile) GetAdjacentBlackCount() int {
+	count := 0
+	coords := t.Coords
+	for _, diff := range CoordsDiffMap {
+		if t.OnFloor.GetOrCreateTile([2]int{coords[0] + diff[0], coords[1] + diff[1]}).Black {
+			count++
+		}
+	}
+	return count
+}
+
 func (f *Floor) NewTile(coords [2]int) *Tile {
 	tile := &Tile{
 		OnFloor: f,
@@ -85,4 +111,13 @@ func (f *Floor) GetOrCreateTile(coords [2]int) *Tile {
 		tile = f.NewTile(coords)
 	}
 	return tile
+}
+
+func (t *Tile) Flip() {
+	t.Black = !t.Black
+	if t.Black {
+		t.OnFloor.BlackTileCount++
+	} else {
+		t.OnFloor.BlackTileCount--
+	}
 }
