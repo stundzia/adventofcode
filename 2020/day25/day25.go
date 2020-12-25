@@ -39,6 +39,5 @@ func DoSilver() string {
 }
 
 func DoGold() string {
-	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 25, "\n")
-	return fmt.Sprintf("%d", len(input))
+	return "There is not part 2 (or part 2 is all the other days and all their parts). Merry Christmas!"
 }
