@@ -166,3 +166,14 @@ func SlicesStringEqual(a, b []string) bool {
 	}
 	return true
 }
+
+
+func GetMaxFromIntSlice(nums []int) int {
+	max := 0
+	for _, num := range nums {
+		if num > max {
+			max = num
+		}
+	}
+	return max
+}
