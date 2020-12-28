@@ -39,5 +39,5 @@ func DoSilver() string {
 }
 
 func DoGold() string {
-	return "There is not part 2 (or part 2 is all the other days and all their parts). Merry Christmas!"
+	return "There is no part 2 (or part 2 is all the other days and all their parts). Merry Christmas!"
 }
