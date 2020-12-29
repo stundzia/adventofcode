@@ -177,3 +177,11 @@ func GetMaxFromIntSlice(nums []int) int {
 	}
 	return max
 }
+
+
+func AbsInt(num int) int {
+	if num < 0 {
+		return -num
+	}
+	return num
+}
