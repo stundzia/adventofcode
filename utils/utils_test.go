@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"math"
 	"testing"
 )
 
@@ -90,7 +91,7 @@ func TestRotateCoords(t *testing.T) {
 	}
 	for _, tc := range tcs {
 		t.Run(tc.test, func(t *testing.T) {
-			if newX, newY := RotateCoordinates(tc.X, tc.Y, tc.degrees); newX != tc.newX || newY != tc.newY {
+			if newX, newY := RotateCoordinates(tc.X, tc.Y, tc.degrees); math.Round(newX) != math.Round(tc.newX) || math.Round(newY) != math.Round(tc.newY) {
 				t.Errorf("expected new coords to be %f, %f but got %f, %f", tc.newX, tc.newY, newX, newY)
 			}
 		})
