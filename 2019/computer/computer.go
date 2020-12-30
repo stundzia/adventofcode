@@ -10,6 +10,7 @@ type Computer struct {
 	Opcodes [opcodeAddressSpaceSize]int
 	InputPipe chan int
 	OutputPipe chan int
+	Running bool
 }
 
 func NewComputer(opcodes []int) *Computer {
@@ -34,65 +35,69 @@ func getOperationAndParameterModes(opcode int) (op, param1, param2, param3 int) 
 
 func (c *Computer) Run() (int, error) {
 	position := 0
+	c.Running = true
+
 	main:
-		for {
-			if position >= len(c.Opcodes) {
-				return 0, NewPositionOutOfRangeError(fmt.Sprintf("position %d is out of range for opcodes with len %d", position, len(c.Opcodes)))
-			}
-
-			opCode, modeParam1, modeParam2, _ := getOperationAndParameterModes(c.Opcodes[position])
-			switch opCode {
-
-			case 1:
-				var param1 int
-				if modeParam1 == 0 {
-					param1 = c.Opcodes[c.Opcodes[position + 1]]
-				} else {
-					param1 = c.Opcodes[position + 1]
-				}
-				var param2 int
-				if modeParam2 == 0 {
-					param2 = c.Opcodes[c.Opcodes[position + 2]]
-				} else {
-					param2 = c.Opcodes[position + 2]
-				}
-				address := c.Opcodes[position + 3]
-				c.Opcodes[address] = param1 + param2
-				position += 4
-
-			case 2:
-				var param1 int
-				if modeParam1 == 0 {
-					param1 = c.Opcodes[c.Opcodes[position + 1]]
-				} else {
-					param1 = c.Opcodes[position + 1]
-				}
-				var param2 int
-				if modeParam2 == 0 {
-					param2 = c.Opcodes[c.Opcodes[position + 2]]
-				} else {
-					param2 = c.Opcodes[position + 2]
-				}
-				address := c.Opcodes[position + 3]
-				c.Opcodes[address] = param1 * param2
-				position += 4
-
-			case 3:
-				address := c.Opcodes[position + 1]
-				c.Opcodes[address] = <- c.InputPipe
-				position += 2
-
-			case 4:
-				address := c.Opcodes[position + 1]
-				c.OutputPipe <- c.Opcodes[address]
-				position += 2
-
-			case 99:
-				break main
-
-			default:
-				return 0, NewUnknownOpcodeError(fmt.Sprintf("unknown opcode received: %d", opCode))
-			}
+	for {
+		if position >= len(c.Opcodes) {
+			return 0, NewPositionOutOfRangeError(fmt.Sprintf("position %d is out of range for opcodes with len %d", position, len(c.Opcodes)))
 		}
+
+		opCode, modeParam1, modeParam2, _ := getOperationAndParameterModes(c.Opcodes[position])
+		switch opCode {
+
+		case 1:
+			var param1 int
+			if modeParam1 == 0 {
+				param1 = c.Opcodes[c.Opcodes[position + 1]]
+			} else {
+				param1 = c.Opcodes[position + 1]
+			}
+			var param2 int
+			if modeParam2 == 0 {
+				param2 = c.Opcodes[c.Opcodes[position + 2]]
+			} else {
+				param2 = c.Opcodes[position + 2]
+			}
+			address := c.Opcodes[position + 3]
+			c.Opcodes[address] = param1 + param2
+			position += 4
+
+		case 2:
+			var param1 int
+			if modeParam1 == 0 {
+				param1 = c.Opcodes[c.Opcodes[position + 1]]
+			} else {
+				param1 = c.Opcodes[position + 1]
+			}
+			var param2 int
+			if modeParam2 == 0 {
+				param2 = c.Opcodes[c.Opcodes[position + 2]]
+			} else {
+				param2 = c.Opcodes[position + 2]
+			}
+			address := c.Opcodes[position + 3]
+			c.Opcodes[address] = param1 * param2
+			position += 4
+
+		case 3:
+			address := c.Opcodes[position + 1]
+			c.Opcodes[address] = <- c.InputPipe
+			position += 2
+
+		case 4:
+			address := c.Opcodes[position + 1]
+			c.OutputPipe <- c.Opcodes[address]
+			position += 2
+
+		case 99:
+			break main
+
+		default:
+			return 0, NewUnknownOpcodeError(fmt.Sprintf("unknown opcode received: %d", opCode))
+		}
+	}
+
+	c.Running = false
 	return c.Opcodes[0], nil
 }
