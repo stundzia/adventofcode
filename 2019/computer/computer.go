@@ -62,6 +62,7 @@ func (c *Computer) Run() (int, error) {
 			address := c.Opcodes[position + 3]
 			c.Opcodes[address] = param1 + param2
 			position += 4
+			break
 
 		case 2:
 			var param1 int
@@ -79,16 +80,103 @@ func (c *Computer) Run() (int, error) {
 			address := c.Opcodes[position + 3]
 			c.Opcodes[address] = param1 * param2
 			position += 4
+			break
 
 		case 3:
 			address := c.Opcodes[position + 1]
 			c.Opcodes[address] = <- c.InputPipe
 			position += 2
+			break
 
 		case 4:
 			address := c.Opcodes[position + 1]
 			c.OutputPipe <- c.Opcodes[address]
 			position += 2
+			break
+
+		case 5:
+			var param1 int
+			if modeParam1 == 0 {
+				param1 = c.Opcodes[c.Opcodes[position + 1]]
+			} else {
+				param1 = c.Opcodes[position + 1]
+			}
+			var param2 int
+			if modeParam2 == 0 {
+				param2 = c.Opcodes[c.Opcodes[position + 2]]
+			} else {
+				param2 = c.Opcodes[position + 2]
+			}
+			if param1 > 0 {
+				position = param2
+			} else {
+				position += 3
+			}
+			break
+
+		case 6:
+			var param1 int
+			if modeParam1 == 0 {
+				param1 = c.Opcodes[c.Opcodes[position + 1]]
+			} else {
+				param1 = c.Opcodes[position + 1]
+			}
+			var param2 int
+			if modeParam2 == 0 {
+				param2 = c.Opcodes[c.Opcodes[position + 2]]
+			} else {
+				param2 = c.Opcodes[position + 2]
+			}
+			if param1 == 0 {
+				position = param2
+			} else {
+				position += 3
+			}
+			break
+
+		case 7:
+			var param1 int
+			if modeParam1 == 0 {
+				param1 = c.Opcodes[c.Opcodes[position + 1]]
+			} else {
+				param1 = c.Opcodes[position + 1]
+			}
+			var param2 int
+			if modeParam2 == 0 {
+				param2 = c.Opcodes[c.Opcodes[position + 2]]
+			} else {
+				param2 = c.Opcodes[position + 2]
+			}
+			address := c.Opcodes[position + 3]
+			if param1 < param2 {
+				c.Opcodes[address] = 1
+			} else {
+				c.Opcodes[address] = 0
+			}
+			position += 4
+			break
+
+		case 8:
+			var param1 int
+			if modeParam1 == 0 {
+				param1 = c.Opcodes[c.Opcodes[position + 1]]
+			} else {
+				param1 = c.Opcodes[position + 1]
+			}
+			var param2 int
+			if modeParam2 == 0 {
+				param2 = c.Opcodes[c.Opcodes[position + 2]]
+			} else {
+				param2 = c.Opcodes[position + 2]
+			}
+			address := c.Opcodes[position + 3]
+			if param1 == param2 {
+				c.Opcodes[address] = 1
+			} else {
+				c.Opcodes[address] = 0
+			}
+			position += 4
+			break
 
 		case 99:
 			break main
