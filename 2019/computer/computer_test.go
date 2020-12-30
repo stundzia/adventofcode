@@ -1,6 +1,9 @@
 package computer
 
-import "testing"
+import (
+	"github.com/stundzia/adventofcode/utils"
+	"testing"
+)
 
 func TestComputerBasicRun(t *testing.T) {
 	opcodes := []int{
@@ -13,6 +16,21 @@ func TestComputerBasicRun(t *testing.T) {
 	res, _ := comp.Run()
 	if res != 3500 {
 		t.Errorf("incorrect opcode at position 0, expected 3500, but found %d", res)
+	}
+}
+
+func TestComputerWithImmediateMode(t *testing.T) {
+	opcodes := []int{
+		1,9,10,3,
+		2,3,11,0,
+		1102,23,42,0,
+		99,
+		30,40,50,
+	}
+	comp := NewComputer(opcodes)
+	res, _ := comp.Run()
+	if res != 23 * 42 {
+		t.Errorf("incorrect opcode at position 0, expected 966, but found %d", res)
 	}
 }
 
@@ -47,5 +65,43 @@ func TestComputerWithInputOutput(t *testing.T) {
 	res := <- comp.OutputPipe
 	if res != 3500 {
 		t.Errorf("incorrect result (address 0), expected 3500, but got %d", res)
+	}
+}
+
+
+func TestGetOperationAndParameterModes(t *testing.T) {
+	tcs := []struct{
+		test string
+		opcode int
+		expected []int
+	}{
+		{
+			"opcode: 1002, should be: 2, 0, 1, 0",
+			1002,
+			[]int{2,0,1,0},
+		},
+		{
+			"opcode: 11004, should be: 4, 0, 1, 1",
+			11004,
+			[]int{4,0,1,1},
+		},
+		{
+			"opcode: 4, should be: 4, 0, 0, 0",
+			4,
+			[]int{4,0,0,0},
+		},
+		{
+			"opcode: 10101, should be: 1, 1, 0, 1",
+			10101,
+			[]int{1,1,0,1},
+		},
+	}
+	for _, tc := range tcs {
+		t.Run(tc.test, func(t *testing.T) {
+			op, param1, param2, param3 := getOperationAndParameterModes(tc.opcode)
+			if !utils.SlicesIntEqual([]int{op, param1, param2, param3}, tc.expected) {
+				t.Errorf("expected %v, but got %v", tc.expected, []int{op, param1, param2, param3})
+			}
+		})
 	}
 }
