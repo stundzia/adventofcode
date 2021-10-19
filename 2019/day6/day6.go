@@ -13,6 +13,8 @@ func DoSilver() string {
 }
 
 func DoGold() string {
-	input, _ := utils.ReadInputFileContentsAsIntSlice(2019, 6, "\n")
-	return fmt.Sprintf("Solution: %d", len(input))
+	input, _ := utils.ReadInputFileContentsAsStringSlice(2019, 6, "\n")
+	ss := NewSystemFromInput(input)
+	_, s := ss.findCommonBody("YOU", "SAN")
+	return fmt.Sprintf("Solution: %d", s - 2)
 }

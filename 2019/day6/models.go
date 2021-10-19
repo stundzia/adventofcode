@@ -16,6 +16,7 @@ type body struct {
 	distanceToCenter int
 }
 
+// NewSystemFromInput - creates new star system from provided input.
 func NewSystemFromInput(input []string) *system {
 	ss := &system{bodies: map[string]*body{}}
 	for _, line := range input {
@@ -27,7 +28,7 @@ func NewSystemFromInput(input []string) *system {
 
 
 func (ss *system) getOrCreateBody(name string) (cosmicBody *body) {
-	if cosmicBody, ok := ss.bodies[name]; !ok { // TODO: see below, this seems to assign nil to cosmicBody and true to ok
+	if cosmicBody, ok := ss.bodies[name]; !ok {
 		cosmicBody = &body{
 			inSystem:   ss,
 			name:       name,
@@ -39,7 +40,7 @@ func (ss *system) getOrCreateBody(name string) (cosmicBody *body) {
 		return cosmicBody
 	}
 
-	cosmicBody = ss.bodies[name] // TODO: without this it doesn't work, need to figure out why
+	cosmicBody = ss.bodies[name]
 
 	return cosmicBody
 }
@@ -68,4 +69,18 @@ func (b *body) getDistanceToCenter() int {
 		return 0
 	}
 	return 1 + b.orbits.getDistanceToCenter()
+}
+
+func (ss *system) findCommonBody(a, b string) (common *body, steps int) {
+	aBody := ss.getOrCreateBody(a)
+	bBody := ss.getOrCreateBody(b)
+	for aSteps := 0; ; aSteps++ {
+		aBody = aBody.orbits
+		for bb, bSteps := bBody, 0; bb.orbits != nil; bb = bb.orbits {
+			bSteps++
+			if bb == aBody {
+				return bb, aSteps + bSteps
+			}
+		}
+	}
 }
