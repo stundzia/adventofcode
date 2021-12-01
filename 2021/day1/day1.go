@@ -6,8 +6,8 @@ import (
 	"github.com/stundzia/adventofcode/utils"
 )
 
-func s(nums []int) int {
-	prev := 0
+func countIncreases(nums []int) int {
+	prev := -1
 	count := 0
 	for _, i := range nums {
 		if i > prev {
@@ -15,13 +15,14 @@ func s(nums []int) int {
 		}
 		prev = i
 	}
+	// Ignore first increase
 	count--
 	return count
 }
 
-func s2(nums []int) int {
+func countWindowIncreases(nums []int) int {
 	count := 0
-	lastWindow := 0
+	lastWindow := -1
 	for i, _ := range nums {
 		if i + 3 > len(nums) {
 			break
@@ -32,16 +33,17 @@ func s2(nums []int) int {
 		}
 		lastWindow = currWindow
 	}
+	// Ignore first increase
 	count--
 	return count
 }
 
 func DoSilver() string {
 	nums, _ := utils.ReadInputFileContentsAsIntSlice(2021, 1, "\n")
-	return fmt.Sprintf("Solution: %d", s(nums))
+	return fmt.Sprintf("Solution: %d", countIncreases(nums))
 }
 
 func DoGold() string {
 	nums, _ := utils.ReadInputFileContentsAsIntSlice(2021, 1, "\n")
-	return fmt.Sprintf("Solution: %d", s2(nums))
+	return fmt.Sprintf("Solution: %d", countWindowIncreases(nums))
 }

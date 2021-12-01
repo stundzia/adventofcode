@@ -2,14 +2,21 @@ package day1
 
 import (
 	"testing"
-
-	"github.com/stundzia/adventofcode/utils"
 )
 
-func TestSomething(t *testing.T) {
-	testSlice := []int{1721, 979, 366, 299, 675, 1456}
-	res := utils.SumIntSlice(testSlice)
-	expected := 5496
+func TestCountIncreases(t *testing.T) {
+	testSlice := []int{1721, 979, 366, 299, 675, 1456, 2222, 45, 55}
+	res := countIncreases(testSlice)
+	expected := 4
+	if res != expected {
+		t.Errorf("Expected %d, but got %d", expected, res)
+	}
+}
+
+func TestCountWindowIncreases(t *testing.T) {
+	testSlice := []int{1721, 979, 366, 299, 675, 1456, 2222, 45, 55, 1233, 14124, 1234}
+	res := countWindowIncreases(testSlice)
+	expected := 4
 	if res != expected {
 		t.Errorf("Expected %d, but got %d", expected, res)
 	}
