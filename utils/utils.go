@@ -91,6 +91,7 @@ func RunWithTimeMetricsAndPrintOutput(solver AocSolver) {
 	fmt.Println("Solution took: ", time.Now().Sub(start))
 }
 
+// GCD - returns greatest common divisor of given 2 ints.
 func GCD(a, b int) int {
 	for b != 0 {
 		t := b
@@ -122,6 +123,7 @@ func RemoveFrom2DIntSlice(s [][]int, i int) [][]int {
 	return s[:len(s)-1]
 }
 
+// StringSliceContains - returns true if slice of strings contains given string.
 func StringSliceContains(ss []string, s string) bool {
 	for _, sVal := range ss {
 		if sVal == s {
@@ -131,6 +133,7 @@ func StringSliceContains(ss []string, s string) bool {
 	return false
 }
 
+// ReverseString - returns reversed string (i.e. given "abcd" returns "dcba").
 func ReverseString(s string) string {
 	newS := ""
 	for i := len(s) - 1; i >= 0; i-- {
@@ -167,7 +170,7 @@ func SlicesStringEqual(a, b []string) bool {
 	return true
 }
 
-
+// GetMaxFromIntSlice - returns highest positive integer from a slice.
 func GetMaxFromIntSlice(nums []int) int {
 	max := 0
 	for _, num := range nums {
@@ -178,7 +181,7 @@ func GetMaxFromIntSlice(nums []int) int {
 	return max
 }
 
-
+// AbsInt - returns absolute value of an integer (if num < 0 returns -num).
 func AbsInt(num int) int {
 	if num < 0 {
 		return -num
