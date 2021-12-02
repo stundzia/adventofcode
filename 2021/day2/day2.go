@@ -6,35 +6,28 @@ import (
 	"github.com/stundzia/adventofcode/utils"
 )
 
-func s(ss []string) int {
-	sub := &Submarine{
-		Depth:    0,
-		Position: 0,
-	}
-	for _, s := range ss {
-		sub.handleCommand(s)
+func part1(commands []string) int {
+	sub := &submarine{}
+	for _, cmd := range commands {
+		sub.handleCommand(cmd)
 	}
 	return sub.Position * sub.Depth
 }
 
-func s2(ss []string) int {
-	sub := &Submarine{
-		Depth:    0,
-		Position: 0,
-		Aim: 0,
-	}
-	for _, s := range ss {
-		sub.handleCommandV2(s)
+func part2(commands []string) int {
+	sub := &submarine{}
+	for _, cmd := range commands {
+		sub.handleCommandV2(cmd)
 	}
 	return sub.Position * sub.Depth
 }
 
 func DoSilver() string {
-	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 2, "\n")
-	return fmt.Sprintf("Solution: %d", s(nums))
+	commands, _ := utils.ReadInputFileContentsAsStringSlice(2021, 2, "\n")
+	return fmt.Sprintf("Solution: %d", part1(commands))
 }
 
 func DoGold() string {
-	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 2, "\n")
-	return fmt.Sprintf("Solution: %d", s2(nums))
+	commands, _ := utils.ReadInputFileContentsAsStringSlice(2021, 2, "\n")
+	return fmt.Sprintf("Solution: %d", part2(commands))
 }

@@ -5,37 +5,39 @@ import (
 	"strings"
 )
 
-type Submarine struct {
+type submarine struct {
 	Depth int
 	Position int
 	Aim int
 }
 
-func (s *Submarine) handleCommand(command string) {
-	cmd := strings.Split(command, " ")[0]
-	numS := strings.Split(command, " ")[1]
-	num, _ := strconv.Atoi(numS)
+func (s *submarine) handleCommand(command string) {
+	parts := strings.Split(command, " ")
+	cmd := parts[0]
+	amountString := parts[1]
+	amount, _ := strconv.Atoi(amountString)
 	switch cmd {
 	case "forward":
-		s.Position += num
+		s.Position += amount
 	case "down":
-		s.Depth += num
+		s.Depth += amount
 	case "up":
-		s.Depth -= num
+		s.Depth -= amount
 	}
 }
 
-func (s *Submarine) handleCommandV2(command string) {
-	cmd := strings.Split(command, " ")[0]
-	numS := strings.Split(command, " ")[1]
-	num, _ := strconv.Atoi(numS)
+func (s *submarine) handleCommandV2(command string) {
+	parts := strings.Split(command, " ")
+	cmd := parts[0]
+	amountString := parts[1]
+	amount, _ := strconv.Atoi(amountString)
 	switch cmd {
 	case "forward":
-		s.Position += num
-		s.Depth += num * s.Aim
+		s.Position += amount
+		s.Depth += amount * s.Aim
 	case "down":
-		s.Aim += num
+		s.Aim += amount
 	case "up":
-		s.Aim -= num
+		s.Aim -= amount
 	}
 }
