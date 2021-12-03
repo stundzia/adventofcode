@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/stundzia/adventofcode/2021/day1"
+	"github.com/stundzia/adventofcode/2021/day3"
 	"github.com/stundzia/adventofcode/utils"
 )
 
 
 func main() {
-	utils.RunWithTimeMetricsAndPrintOutput(day1.DoSilver)
-	utils.RunWithTimeMetricsAndPrintOutput(day1.DoGold)
+	utils.RunWithTimeMetricsAndPrintOutput(day3.DoSilver)
+	utils.RunWithTimeMetricsAndPrintOutput(day3.DoGold)
 }
