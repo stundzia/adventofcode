@@ -7,7 +7,7 @@ import (
 	"github.com/stundzia/adventofcode/utils"
 )
 
-func s(nums []string) int {
+func part1(nums []string) int {
 	var gamma string
 	var epsilon string
 	for i := 0; i < len(nums[0]); i ++ {
@@ -34,7 +34,7 @@ func s(nums []string) int {
 	return int(g * e)
 }
 
-func s2(nums []string) int {
+func part2(nums []string) int {
 	validO2 := nums
 	validCO2 := nums
 
@@ -92,10 +92,10 @@ func s2(nums []string) int {
 
 func DoSilver() string {
 	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 3, "\n")
-	return fmt.Sprintf("Solution: %d", s(nums))
+	return fmt.Sprintf("Solution: %d", part1(nums))
 }
 
 func DoGold() string {
 	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 3, "\n")
-	return fmt.Sprintf("Solution: %d", s2(nums))
+	return fmt.Sprintf("Solution: %d", part2(nums))
 }
