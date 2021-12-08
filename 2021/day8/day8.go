@@ -16,13 +16,6 @@ var digitSignalCountMap = map[int]int{
 	7: 8,
 }
 
-var digitToSignalProperMap = map[int][]string {
-	1: {"c", "f"},
-	2: {"a", "c", "d", "e", "g"},
-	3: {"a", "c", "d", "f", "g"},
-	4: {"b", "c", "d", "f"},
-}
-
 func parseLine(line string) ([]string, []string) {
 	lineParts := strings.Split(line, " | ")
 	signals := strings.Split(lineParts[0], " ")
@@ -37,7 +30,6 @@ func parseDigit(digitMap map[int]string, digitStr string) (map[int]string, int) 
 			return digitMap, k
 		}
 	}
-	//_, have8 := digitMap[8]
 	_, have7 := digitMap[7]
 	_, have6 := digitMap[6]
 	_, have4 := digitMap[4]
@@ -84,13 +76,6 @@ func parseDigit(digitMap map[int]string, digitStr string) (map[int]string, int) 
 				return digitMap, 5
 			}
 		}
-		//matchLetters := matchingLettersInOther(digitStr, digitMap[4])
-		//if matchLetters == 2 {
-		//	return 2
-		//}
-		//if matchLetters == 3 {
-		//	return 5
-		//}
 	case 6:
 		if have7 && !allLettersInOther(digitMap[7], digitStr) {
 			digitMap[6] = digitStr
@@ -159,10 +144,10 @@ func parseLine2(line string) int {
 			digitToLetterMap[8] = s
 		}
 	}
-	output := ""
 	for _, s := range signals {
 		digitToLetterMap, _ = parseDigit(digitToLetterMap, s)
 	}
+	output := ""
 	for _, o := range outputs {
 		_, oo := parseDigit(digitToLetterMap, o)
 		if oo == -1 {
@@ -193,7 +178,6 @@ func DoGold() string {
 	res := 0
 	for _, l := range lines {
 		d := parseLine2(l)
-		fmt.Println("d: ", d)
 		res += d
 	}
 	return fmt.Sprintf("Solution: %d", res)
