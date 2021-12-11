@@ -24,9 +24,7 @@ type octopus struct {
 
 func (og *octoGrid) assignNeighbours() {
 	for coords, octo := range og.octopi {
-		coordsSlice := strings.Split(coords, ",")
-		x, _ := strconv.Atoi(coordsSlice[0])
-		y, _ := strconv.Atoi(coordsSlice[1])
+		x, y := utils.CoordsStrToInts(coords)
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x+1, y)]; exists {
 			octo.adjacent[fmt.Sprintf("%d,%d", x+1,y)] = nei
 		}
@@ -54,6 +52,7 @@ func (og *octoGrid) assignNeighbours() {
 	}
 }
 
+// doStep - handles the logic of a step and returns true if all octopi flashed
 func (og *octoGrid) doStep() bool {
 	for _, octo := range og.octopi {
 		octo.flashed = false
@@ -77,7 +76,7 @@ func (og *octoGrid) doStep() bool {
 	return true
 }
 
-func (o *octopus) flashIfNeeded() bool {
+func (o *octopus) flashIfNeeded() {
 	if o.energy > 9 && o.flashed == false {
 		o.flashed = true
 		o.octoGrid.flashCount++
@@ -85,9 +84,7 @@ func (o *octopus) flashIfNeeded() bool {
 			nei.energy += 1
 			nei.flashIfNeeded()
 		}
-		return true
 	}
-	return false
 }
 
 func newOctoGrid(nums []string) *octoGrid {

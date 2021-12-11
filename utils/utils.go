@@ -63,6 +63,8 @@ func SliceStringToInt(slice []string) []int {
 	return res
 }
 
+// SlicesIntEqual - returns true is a and b are equal int slices (e.g. if a = [2,3,1]
+// then if b = [2,3,1] will return true, if b = [1,2,3] will return false, i.e. order is important).
 func SlicesIntEqual(a, b []int) bool {
 	if len(a) != len(b) {
 		return false
@@ -75,6 +77,13 @@ func SlicesIntEqual(a, b []int) bool {
 	return true
 }
 
+// CoordsStrToInts - converts coords string of format "x,y" to ints and returns x,y as ints.
+func CoordsStrToInts(coords string) (x, y int) {
+	coordsSlice := strings.Split(coords, ",")
+	x, _ = strconv.Atoi(coordsSlice[0])
+	y, _ = strconv.Atoi(coordsSlice[1])
+	return x, y
+}
 
 func RotateCoordinates(x, y float64, degrees float64) (newX, newY float64) {
 	// y' = y*cos(a) - x*sin(a)
@@ -111,9 +120,9 @@ func LCM(a, b int, integers ...int) int {
 	return result
 }
 
-
-func RemoveFromIntSlice(s []int, i int) []int {
-	s[i] = s[len(s)-1]
+// RemoveFromIntSlice - removes element at provided index from int slice.
+func RemoveFromIntSlice(s []int, index int) []int {
+	s[index] = s[len(s)-1]
 	return s[:len(s)-1]
 }
 
@@ -170,12 +179,23 @@ func SlicesStringEqual(a, b []string) bool {
 	return true
 }
 
-// GetMaxFromIntSlice - returns highest positive integer from a slice.
+// GetMaxFromIntSlice - returns the biggest positive integer from a slice, if no positive integer exists, returns 0.
 func GetMaxFromIntSlice(nums []int) int {
 	max := 0
 	for _, num := range nums {
 		if num > max {
 			max = num
+		}
+	}
+	return max
+}
+
+// GetMaxAbsFromIntSlice - returns the biggest absolute value of an integer from a slice.
+func GetMaxAbsFromIntSlice(nums []int) int {
+	max := 0
+	for _, num := range nums {
+		if AbsInt(num) > max {
+			max = AbsInt(num)
 		}
 	}
 	return max
