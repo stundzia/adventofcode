@@ -2,13 +2,16 @@ package day12
 
 import (
 	"fmt"
+	"golang.org/x/sync/semaphore"
 	"strings"
+	"sync"
 	"unicode"
 
 	"github.com/stundzia/adventofcode/utils"
 )
 
 type caveSystem struct {
+	pathsMux sync.Mutex
 	paths map[string]struct{}
 	start *cave
 	end *cave
@@ -16,9 +19,11 @@ type caveSystem struct {
 }
 
 type cave struct {
+	caveSystem *caveSystem
 	name string
 	connections map[string]*cave
 	big bool
+	paths map[string]struct{}
 }
 
 func newCaveSystem(lines []string) *caveSystem {
@@ -54,20 +59,22 @@ func (cs *caveSystem) getOrCreateCave(name string) *cave {
 	if cave, exists := cs.caves[name]; exists {
 		return cave
 	}
-	c := newCave(name)
+	c := cs.newCave(name)
 	cs.caves[name] = c
 	return c
 }
 
-func newCave(name string) *cave {
+func (cs *caveSystem) newCave(name string) *cave {
 	big := false
 	if len(name) <= 2 && unicode.IsUpper(rune(name[0])) {
 		big = true
 	}
 	c := &cave{
+		caveSystem: cs,
 		name: name,
 		big: big,
 		connections: map[string]*cave{},
+		paths: map[string]struct{}{},
 	}
 	return c
 }
@@ -95,7 +102,56 @@ func (cs *caveSystem) validatePath(path string) bool {
 	return true
 }
 
-func (cs *caveSystem) tryRandomPath() bool {
+func (cs *caveSystem) validatePathNoStart(path string) bool {
+	itms := strings.Split(path, "-")
+	usedCount := map[string]int{}
+	for i, itm := range itms {
+		if i == len(itms)-1 && itm != "end" {
+			return false
+		}
+		if _, exists := usedCount[itm]; !exists {
+			usedCount[itm] = 0
+		}
+		usedCount[itm]++
+	}
+	for itm, count := range usedCount {
+		if unicode.IsLower(rune(itm[0])) && count > 1 {
+			return false
+		}
+	}
+	return true
+}
+
+func (cs *caveSystem) validatePathNoStartPart2(path string) bool {
+	itms := strings.Split(path, "-")
+	usedCount := map[string]int{}
+	for i, itm := range itms {
+		if i == len(itms)-1 && itm != "end" {
+			return false
+		}
+		if _, exists := usedCount[itm]; !exists {
+			usedCount[itm] = 0
+		}
+		usedCount[itm]++
+	}
+	doubleEntryExists := false
+	for itm, count := range usedCount {
+		if (itm == "start" || itm == "end") && count > 1 {
+			return false
+		}
+		if unicode.IsLower(rune(itm[0])) && count > 1 {
+			if !doubleEntryExists {
+				doubleEntryExists = true
+				continue
+			} else {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func (cs *caveSystem) tryRandomPath(sem *semaphore.Weighted) bool {
 	path := []*cave{cs.start}
 	current := cs.start
 	visited := map[*cave]struct{}{}
@@ -127,32 +183,108 @@ func (cs *caveSystem) tryRandomPath() bool {
 	}
 	pathStr = pathStr[1:]
 	if cs.validatePath(pathStr) {
+		cs.pathsMux.Lock()
 		if _, exists := cs.paths[pathStr]; exists {
+			cs.pathsMux.Unlock()
+			sem.Release(1)
 			return false
 		}
 		cs.paths[pathStr] = struct{}{}
+		cs.pathsMux.Unlock()
+	}
+	sem.Release(1)
+	return false
+}
+
+func doubleEntryInPath(path string) bool {
+	parts := strings.Split(path, "-")
+	countMap := map[string]int{}
+	for _, part := range parts {
+		if len(part) < 3 && unicode.IsLower(rune(part[0])) {
+			if _, exists := countMap[part]; !exists {
+				countMap[part] = 1
+			} else {
+				return true
+			}
+		}
 	}
 	return false
+}
+
+func (c *cave) getPathsToExit() {
+	if c.caveSystem.end == c {
+		c.paths = map[string]struct{}{c.name: {}}
+		return
+	}
+	paths := map[string]struct{}{}
+	for _, con := range c.connections {
+		pathLoop:
+		for path, _ := range con.paths {
+			if !c.big {
+				parts := strings.Split(path, "-")
+				for _, p := range parts {
+					if p == c.name {
+						continue pathLoop
+					}
+				}
+			}
+			if c.caveSystem.validatePathNoStart(c.name + "-" + path) {
+				paths[c.name + "-" + path] = struct{}{}
+			}
+		}
+	}
+	c.paths = paths
+}
+
+func (c *cave) getPathsToExit2() {
+	if c.caveSystem.end == c {
+		c.paths = map[string]struct{}{c.name: {}}
+		return
+	}
+	paths := map[string]struct{}{}
+	for _, con := range c.connections {
+	pathLoop:
+		for path, _ := range con.paths {
+			deExists := doubleEntryInPath(path)
+			if !c.big {
+				parts := strings.Split(path, "-")
+				for _, p := range parts {
+					if p == c.name && deExists {
+						continue pathLoop
+					}
+				}
+			}
+			if c.caveSystem.validatePathNoStartPart2(c.name + "-" + path) {
+				paths[c.name + "-" + path] = struct{}{}
+			}
+		}
+	}
+	c.paths = paths
 }
 
 func DoSilver() string {
 	lines, _ := utils.ReadInputFileContentsAsStringSlice(2021, 12, "\n")
 	cs := newCaveSystem(lines)
-	failedInARowCount := 0
-	for ;; {
-		if cs.tryRandomPath() {
-			failedInARowCount = 0
-		} else {
-			failedInARowCount++
-		}
-		if failedInARowCount == 239625000 {
-			break
+	cs.end.getPathsToExit()
+	for i := 0; i < 20; i++ {
+		for _, c := range cs.caves {
+			c.getPathsToExit()
 		}
 	}
-	return fmt.Sprintf("Solution: %d", len(cs.paths))
+	return fmt.Sprintf("Solution: %d", len(cs.start.paths))
 }
 
 func DoGold() string {
-	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 12, "\n")
-	return fmt.Sprintf("Solution: %d", len(nums))
+	lines, _ := utils.ReadInputFileContentsAsStringSlice(2021, 12, "\n")
+	cs := newCaveSystem(lines)
+	cs.end.getPathsToExit2()
+	lastCount := 0
+	for i := 0; i < 22; i++ {
+		for _, c := range cs.caves {
+			c.getPathsToExit2()
+		}
+		lastCount = len(cs.start.paths)
+		fmt.Println("count: ", lastCount)
+	}
+	return fmt.Sprintf("Solution: %d", len(cs.start.paths))
 }
