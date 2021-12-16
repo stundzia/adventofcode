@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 22, "\n\n")
 	player1 := utils.SliceStringToInt(strings.Split(input[0], "\n")[1:])
@@ -14,7 +13,7 @@ func DoSilver() string {
 	game := NewGame(player1, player2, false)
 	var gg bool
 	var winner int
-	for ;gg != true; {
+	for gg != true {
 		gg, winner = game.PlayRound()
 	}
 	score := game.getScore(winner)
@@ -28,7 +27,7 @@ func DoGold() string {
 	game := NewGame(player1, player2, true)
 	var gg bool
 	var winner int
-	for ;gg != true; {
+	for gg != true {
 		gg, winner = game.PlayRound()
 	}
 	score := game.getScore(winner)

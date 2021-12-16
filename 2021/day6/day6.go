@@ -2,13 +2,11 @@ package day6
 
 import (
 	"fmt"
-
 	"github.com/stundzia/adventofcode/utils"
 )
 
 type fishieStates struct {
 	states map[int]int
-
 }
 
 func newFishieStates(states []int) *fishieStates {

@@ -3,15 +3,15 @@ package day17
 import "fmt"
 
 type PocketDimension struct {
-	Cubes map[[3]int]*Cube
+	Cubes   map[[3]int]*Cube
 	Cubes4D map[[4]int]*Cube
 }
 
 type Cube struct {
 	dimension *PocketDimension
-	coords [3]int
-	coords4D [4]int
-	active bool
+	coords    [3]int
+	coords4D  [4]int
+	active    bool
 }
 
 func NewPockedDimensionFromInitialStateSlice(stateString []string, dimensions int) *PocketDimension {
@@ -23,9 +23,9 @@ func NewPockedDimensionFromInitialStateSlice(stateString []string, dimensions in
 		for y, line := range stateString {
 			for x, val := range line {
 				if string(val) == "#" {
-					pd.CreateCube4D([4]int{x,y,0, 0}, true)
+					pd.CreateCube4D([4]int{x, y, 0, 0}, true)
 				} else {
-					pd.CreateCube4D([4]int{x,y,0, 0}, false)
+					pd.CreateCube4D([4]int{x, y, 0, 0}, false)
 				}
 			}
 		}
@@ -36,9 +36,9 @@ func NewPockedDimensionFromInitialStateSlice(stateString []string, dimensions in
 		for y, line := range stateString {
 			for x, val := range line {
 				if string(val) == "#" {
-					pd.CreateCube([3]int{x,y,0}, true)
+					pd.CreateCube([3]int{x, y, 0}, true)
 				} else {
-					pd.CreateCube([3]int{x,y,0}, false)
+					pd.CreateCube([3]int{x, y, 0}, false)
 				}
 			}
 		}
@@ -48,7 +48,6 @@ func NewPockedDimensionFromInitialStateSlice(stateString []string, dimensions in
 	}
 	return pd
 }
-
 
 func (pd *PocketDimension) DoCycle() {
 	cubes := []*Cube{}
@@ -115,13 +114,12 @@ func (pd *PocketDimension) CreateCube(coords [3]int, active bool) *Cube {
 func (pd *PocketDimension) CreateCube4D(coords [4]int, active bool) *Cube {
 	cube := &Cube{
 		dimension: pd,
-		coords4D:    coords,
+		coords4D:  coords,
 		active:    active,
 	}
 	pd.Cubes4D[coords] = cube
 	return cube
 }
-
 
 func (pd *PocketDimension) GetActiveCount() (activeCount int) {
 	for _, c := range pd.Cubes {
@@ -142,7 +140,6 @@ func (pd *PocketDimension) Get4DActiveCount() (activeCount int) {
 	fmt.Println(activeCount)
 	return activeCount
 }
-
 
 func (pd *PocketDimension) GetOrCreateCube(coords [3]int) *Cube {
 	if cube, ok := pd.Cubes[coords]; !ok {
@@ -215,4 +212,3 @@ func (c *Cube) GetActive4DNeighbourCount() (count int) {
 	}
 	return count
 }
-

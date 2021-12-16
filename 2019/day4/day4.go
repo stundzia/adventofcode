@@ -55,7 +55,6 @@ func getPasswordCountInRange(min, max, version int) int {
 	return count
 }
 
-
 func DoSilver() string {
 	return fmt.Sprintf("Solution: %d", getPasswordCountInRange(197487, 673251, 1))
 }

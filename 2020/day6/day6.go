@@ -9,7 +9,7 @@ import (
 func countGroup(group string) int {
 	letters := map[rune]interface{}{}
 	for _, l := range group {
-		letters[l] = struct {}{}
+		letters[l] = struct{}{}
 	}
 	return len(letters)
 }
@@ -25,7 +25,7 @@ func countGroupV2(group []string) int {
 	fmt.Println(letters)
 	fmt.Println(len(group))
 	for _, c := range letters {
-		if c == len(group) - 1 {
+		if c == len(group)-1 {
 			sum++
 		}
 	}

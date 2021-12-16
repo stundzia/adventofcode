@@ -3,9 +3,9 @@ package day13
 import "testing"
 
 func TestBusSchedule_GetFirstSequentialTimestamp(t *testing.T) {
-	tcs := []struct{
-		test string
-		input string
+	tcs := []struct {
+		test     string
+		input    string
 		expected uint64
 	}{
 		{

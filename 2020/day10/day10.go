@@ -6,9 +6,8 @@ import (
 	"strconv"
 )
 
-
 func handleAdapter(adapterMap map[int]map[string]int, adapter int) int {
-	allowedDiffs := []int{1,2,3}
+	allowedDiffs := []int{1, 2, 3}
 	if _, ok := adapterMap[adapter]["connected_to"]; ok {
 		return -1
 	}
@@ -16,7 +15,7 @@ func handleAdapter(adapterMap map[int]map[string]int, adapter int) int {
 	connectedTo := -1
 	canConnectCount := 0
 	for _, diff := range allowedDiffs {
-		if _, ok := adapterMap[adapter + diff]; ok {
+		if _, ok := adapterMap[adapter+diff]; ok {
 			if diffUsed == -1 && connectedTo == -1 {
 				diffUsed = diff
 				connectedTo = adapter + diff
@@ -30,19 +29,17 @@ func handleAdapter(adapterMap map[int]map[string]int, adapter int) int {
 	return connectedTo
 }
 
-
 func adapterMapFromInput(input []int) map[int]map[string]int {
 	adapterMap := map[int]map[string]int{}
 	for _, adapter := range input {
 		adapterMap[adapter] = map[string]int{}
 	}
 	next := 1
-	for ;next > 0; {
+	for next > 0 {
 		next = handleAdapter(adapterMap, next)
 	}
 	return adapterMap
 }
-
 
 func adapterMatrixFromInput(input []int) [][]int {
 	sort.Ints(input)
@@ -50,7 +47,7 @@ func adapterMatrixFromInput(input []int) [][]int {
 	for i, x := range input {
 		adapterMatrix[i] = make([]int, len(input))
 		for j, y := range input {
-			if y > x && y - x <= 3 {
+			if y > x && y-x <= 3 {
 				adapterMatrix[i][j] = 1
 			} else {
 				adapterMatrix[i][j] = 0
@@ -59,7 +56,6 @@ func adapterMatrixFromInput(input []int) [][]int {
 	}
 	return adapterMatrix
 }
-
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsIntSlice(2020, 10, "\n")
@@ -77,7 +73,6 @@ func DoSilver() string {
 
 	return strconv.Itoa(count1Diff * count3Diff)
 }
-
 
 func multiplyMatrices(matrix1 [][]int, matrix2 [][]int) [][]int {
 	res := make([][]int, len(matrix1))
@@ -104,7 +99,7 @@ func DoGold() string {
 			max = val
 		}
 	}
-	input = append(input, max + 3)
+	input = append(input, max+3)
 	adpMatrix := adapterMatrixFromInput(input)
 	adpMatrixBase := make([][]int, len(adpMatrix))
 	for i, _ := range adpMatrixBase {
@@ -114,7 +109,7 @@ func DoGold() string {
 	paths := 0
 	for i := 0; i < len(input); i++ {
 		adpMatrix = multiplyMatrices(adpMatrix, adpMatrixBase)
-		paths += adpMatrix[0][len(adpMatrix) - 1]
+		paths += adpMatrix[0][len(adpMatrix)-1]
 	}
 
 	return strconv.Itoa(paths)

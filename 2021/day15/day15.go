@@ -15,13 +15,13 @@ type cave struct {
 
 type node struct {
 	cave *cave
-	val int
-	x int
-	y int
-	n *node
-	s *node
-	w *node
-	e *node
+	val  int
+	x    int
+	y    int
+	n    *node
+	s    *node
+	w    *node
+	e    *node
 }
 
 func (c *cave) getNode(x, y int) *node {
@@ -29,10 +29,10 @@ func (c *cave) getNode(x, y int) *node {
 }
 
 func (n *node) getNeighbours() {
-	n.n = n.cave.getNode(n.x, n.y - 1)
-	n.s = n.cave.getNode(n.x, n.y + 1)
-	n.e = n.cave.getNode(n.x + 1, n.y)
-	n.w = n.cave.getNode(n.x - 1, n.y)
+	n.n = n.cave.getNode(n.x, n.y-1)
+	n.s = n.cave.getNode(n.x, n.y+1)
+	n.e = n.cave.getNode(n.x+1, n.y)
+	n.w = n.cave.getNode(n.x-1, n.y)
 }
 
 func newCave(nums []string) *cave {
@@ -66,11 +66,11 @@ func newCavePart2(nums []string) *cave {
 
 			for xMult := 0; xMult < 5; xMult++ {
 				for yMult := 0; yMult < 5; yMult++ {
-					if xMult + yMult == 0 {
+					if xMult+yMult == 0 {
 						continue
 					}
-					newX := x + xMult * maxX
-					newY := y + yMult * maxY
+					newX := x + xMult*maxX
+					newY := y + yMult*maxY
 					newVal := valInt + xMult + yMult
 					if newVal > 9 {
 						newVal = newVal - 9
@@ -94,7 +94,7 @@ func newCavePart2(nums []string) *cave {
 }
 
 func (c *cave) manhattenDistance(a, b *node) int {
-	return utils.AbsInt(a.x - b.x) + utils.AbsInt(a.y - b.y)
+	return utils.AbsInt(a.x-b.x) + utils.AbsInt(a.y-b.y)
 }
 
 func (c *cave) findLeastRiskyPathVal(start, end *node) int {
@@ -104,25 +104,25 @@ func (c *cave) findLeastRiskyPathVal(start, end *node) int {
 		for _, n := range c.grid {
 			currVal, inMap := riskMap[n]
 			if val, exists := riskMap[n.s]; exists {
-				if !inMap || currVal > val + n.val {
+				if !inMap || currVal > val+n.val {
 					riskMap[n] = val + n.val
 					didSomething = true
 				}
 			}
 			if val, exists := riskMap[n.n]; exists {
-				if !inMap || currVal > val + n.val {
+				if !inMap || currVal > val+n.val {
 					riskMap[n] = val + n.val
 					didSomething = true
 				}
 			}
 			if val, exists := riskMap[n.e]; exists {
-				if !inMap || currVal > val + n.val {
+				if !inMap || currVal > val+n.val {
 					riskMap[n] = val + n.val
 					didSomething = true
 				}
 			}
 			if val, exists := riskMap[n.w]; exists {
-				if !inMap || currVal > val + n.val {
+				if !inMap || currVal > val+n.val {
 					riskMap[n] = val + n.val
 					didSomething = true
 				}
@@ -139,20 +139,20 @@ func (c *cave) findLeastRiskyPathVal(start, end *node) int {
 func DoSilver() string {
 	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 15, "\n")
 	cve := newCave(nums)
-	start := cve.getNode(0,0)
+	start := cve.getNode(0, 0)
 	end := cve.getNode(cve.maxX, cve.maxY)
 	r := cve.findLeastRiskyPathVal(start, end)
 
-	return fmt.Sprintf("Solution: %d", r - start.val)
+	return fmt.Sprintf("Solution: %d", r-start.val)
 }
 
 func DoGold() string {
 	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 15, "\n")
 
 	cve := newCavePart2(nums)
-	start := cve.getNode(0,0)
+	start := cve.getNode(0, 0)
 	end := cve.getNode(cve.maxX, cve.maxY)
 	r := cve.findLeastRiskyPathVal(start, end)
 
-	return fmt.Sprintf("Solution: %d", r - start.val)
+	return fmt.Sprintf("Solution: %d", r-start.val)
 }

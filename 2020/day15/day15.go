@@ -5,7 +5,6 @@ import (
 	"github.com/stundzia/adventofcode/utils"
 )
 
-
 func PlayTheGame(startingNums []int, turnToGet int) int {
 	numberTurnMap := map[int][2]int{}
 	turn := 0
@@ -15,7 +14,7 @@ func PlayTheGame(startingNums []int, turnToGet int) int {
 		numberTurnMap[num] = [2]int{turn, -1}
 		lastNum = num
 	}
-	for ;; {
+	for {
 		turn++
 		num := 0
 		if turns, ok := numberTurnMap[lastNum]; ok {

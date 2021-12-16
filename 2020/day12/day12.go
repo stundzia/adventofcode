@@ -6,7 +6,6 @@ import (
 	"strconv"
 )
 
-
 func parseNavCommand(c string) (direction string, value int) {
 	direction = string(c[0])
 	value, _ = strconv.Atoi(c[1:])
@@ -15,7 +14,7 @@ func parseNavCommand(c string) (direction string, value int) {
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 12, "\n")
-	ship := NewShip(90, [2]int{0,0})
+	ship := NewShip(90, [2]int{0, 0})
 	for _, command := range input {
 		dir, val := parseNavCommand(command)
 		ship.HandleNavCommand(dir, val)
@@ -26,8 +25,8 @@ func DoSilver() string {
 
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 12, "\n")
-	ship := NewShip(90, [2]int{0,0})
-	wp := NewShip(0, [2]int{10,1})
+	ship := NewShip(90, [2]int{0, 0})
+	wp := NewShip(0, [2]int{10, 1})
 	sn := &ShipNav{
 		Ship:     ship,
 		Waypoint: wp,

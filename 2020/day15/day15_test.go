@@ -3,27 +3,27 @@ package day15
 import "testing"
 
 func TestPlayTheGame(t *testing.T) {
-	tcs := []struct{
-		test string
+	tcs := []struct {
+		test         string
 		startingNums []int
-		turnToGet int
-		expected int
+		turnToGet    int
+		expected     int
 	}{
 		{
 			"Starting nums: 1,3,2 turn to return: 2020",
-			[]int{1,3,2},
+			[]int{1, 3, 2},
 			2020,
 			1,
 		},
 		{
 			"Starting nums: 2,1,3 turn to return: 2020",
-			[]int{2,1,3},
+			[]int{2, 1, 3},
 			2020,
 			10,
 		},
 		{
 			"Starting nums: 3,1,2 turn to return: 2020",
-			[]int{3,1,2},
+			[]int{3, 1, 2},
 			2020,
 			1836,
 		},
@@ -37,4 +37,3 @@ func TestPlayTheGame(t *testing.T) {
 		})
 	}
 }
-

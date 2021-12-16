@@ -7,16 +7,14 @@ import (
 
 type CupGame struct {
 	CurrentCup *Cup
-	MaxLabel int
-	LabelMap map[int]*Cup
+	MaxLabel   int
+	LabelMap   map[int]*Cup
 }
-
 
 type Cup struct {
-	Next *Cup
+	Next  *Cup
 	Label int
 }
-
 
 func NewCupGame(cupLabels []int) *CupGame {
 	cg := &CupGame{
@@ -25,8 +23,8 @@ func NewCupGame(cupLabels []int) *CupGame {
 	cups := []*Cup{}
 	for _, cl := range cupLabels {
 		cup := &Cup{
-			Next:     nil,
-			Label:    cl,
+			Next:  nil,
+			Label: cl,
 		}
 		cups = append(cups, cup)
 		cg.LabelMap[cl] = cup
@@ -35,10 +33,10 @@ func NewCupGame(cupLabels []int) *CupGame {
 		}
 	}
 	for i, cup := range cups {
-		if i == len(cups) - 1 {
+		if i == len(cups)-1 {
 			cup.Next = cups[0]
 		} else {
-			cup.Next = cups[i + 1]
+			cup.Next = cups[i+1]
 		}
 	}
 	cg.CurrentCup = cups[0]
@@ -47,8 +45,8 @@ func NewCupGame(cupLabels []int) *CupGame {
 
 func (cg *CupGame) getDestinationCup(pickedLabels [3]int) *Cup {
 	label := cg.CurrentCup.Label - 1
-	MainLoop:
-	for ;label > 0; label-- {
+MainLoop:
+	for ; label > 0; label-- {
 		for _, pl := range pickedLabels {
 			if label == pl {
 				continue MainLoop
@@ -57,8 +55,8 @@ func (cg *CupGame) getDestinationCup(pickedLabels [3]int) *Cup {
 		return cg.LabelMap[label]
 	}
 	label = cg.MaxLabel
-	MaxLabelLoop:
-	for ;label > 0; label-- {
+MaxLabelLoop:
+	for ; label > 0; label-- {
 		for _, pl := range pickedLabels {
 			if label == pl {
 				continue MaxLabelLoop
@@ -69,7 +67,6 @@ func (cg *CupGame) getDestinationCup(pickedLabels [3]int) *Cup {
 	return nil
 }
 
-
 func (cg *CupGame) doMove() {
 	takenCups := []*Cup{}
 	currentCup := cg.CurrentCup
@@ -79,10 +76,10 @@ func (cg *CupGame) doMove() {
 		takenLabels[i] = currentCup.Next.Label
 		currentCup = currentCup.Next
 	}
-	cg.CurrentCup.Next = takenCups[len(takenCups) - 1].Next
-	takenCups[len(takenCups) - 1].Next = nil
+	cg.CurrentCup.Next = takenCups[len(takenCups)-1].Next
+	takenCups[len(takenCups)-1].Next = nil
 	destCup := cg.getDestinationCup(takenLabels)
-	takenCups[len(takenCups) - 1].Next = destCup.Next
+	takenCups[len(takenCups)-1].Next = destCup.Next
 	destCup.Next = takenCups[0]
 	cg.CurrentCup = cg.CurrentCup.Next
 }
@@ -91,14 +88,14 @@ func (cg *CupGame) PrintCups() {
 	cc := cg.CurrentCup
 	fmt.Printf(" %d -> %d ", cc.Label, cc.Next.Label)
 	cc = cc.Next
-	for ; cc != cg.CurrentCup; {
+	for cc != cg.CurrentCup {
 		fmt.Printf(" %d -> %d ", cc.Label, cc.Next.Label)
 		cc = cc.Next
 	}
 	cc = cg.CurrentCup
 	fmt.Printf("\n %d ", cc.Label)
 	cc = cc.Next
-	for ; cc != cg.CurrentCup; {
+	for cc != cg.CurrentCup {
 		fmt.Printf(" %d ", cc.Label)
 		cc = cc.Next
 	}

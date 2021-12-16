@@ -5,18 +5,17 @@ import (
 )
 
 type Game struct {
-	Deck1 *Deck
-	Deck2 *Deck
-	PlayedConfigs map[string]struct{}
+	Deck1           *Deck
+	Deck2           *Deck
+	PlayedConfigs   map[string]struct{}
 	SubgamesEnabled bool
 }
 
 type Deck struct {
-	TopCard *Card
+	TopCard    *Card
 	BottomCard *Card
-	CardCount int
+	CardCount  int
 }
-
 
 type Card struct {
 	Above *Card
@@ -47,14 +46,12 @@ func newDeck(cards []int) *Deck {
 	return deck
 }
 
-
 func NewGame(player1 []int, player2 []int, subgamesEnabled bool) *Game {
 	g := &Game{
-		Deck1: newDeck(player1),
-		Deck2: newDeck(player2),
-		PlayedConfigs: map[string]struct{}{},
+		Deck1:           newDeck(player1),
+		Deck2:           newDeck(player2),
+		PlayedConfigs:   map[string]struct{}{},
 		SubgamesEnabled: subgamesEnabled,
-
 	}
 	return g
 }
@@ -76,7 +73,7 @@ func (d *Deck) removeTopCard() *Card {
 
 func (d *Deck) print() {
 	card := d.TopCard
-	for ; card != nil; {
+	for card != nil {
 		fmt.Printf("%v <- %d -> %v \n", card.Above, card.Value, card.Below)
 		card = card.Below
 	}
@@ -108,7 +105,6 @@ func (d *Deck) addCardsToBottom(cards ...*Card) {
 	}
 }
 
-
 func (g *Game) PlayRound() (bool, int) {
 	var winner int
 	config := g.getCardsConfig()
@@ -138,7 +134,7 @@ func (g *Game) PlayRound() (bool, int) {
 		subgame := NewGame(g.Deck1.getCardValueSlice(card1.Value), g.Deck2.getCardValueSlice(card2.Value), true)
 		var roundWinner int
 		var gg bool
-		for ;gg != true; {
+		for gg != true {
 			gg, roundWinner = subgame.PlayRound()
 		}
 		if roundWinner == 1 {
@@ -170,7 +166,6 @@ func (g *Game) getCardsConfig() string {
 	res := fmt.Sprintf("%s__%s", g.Deck1.getCardsConfig(), g.Deck2.getCardsConfig())
 	return res
 }
-
 
 func (g *Game) getScore(player int) int {
 	var score int

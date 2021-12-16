@@ -11,8 +11,8 @@ type BusSchedule struct {
 }
 
 type Bus struct {
-	Schedule *BusSchedule
-	ID int
+	Schedule       *BusSchedule
+	ID             int
 	DepartureTimes map[int]interface{}
 }
 
@@ -56,10 +56,10 @@ func (bs *BusSchedule) GenerateSchedules(from int, to int) {
 	}
 }
 
-func (b *Bus) GenerateSchedule(from int, to int)  {
+func (b *Bus) GenerateSchedule(from int, to int) {
 	for i := from; i < to; i++ {
-		if i % b.ID == 0 {
-			b.DepartureTimes[i] = struct {}{}
+		if i%b.ID == 0 {
+			b.DepartureTimes[i] = struct{}{}
 		}
 	}
 }
@@ -70,11 +70,11 @@ func (b *Bus) LeavesAtTimestamp(timestamp int) bool {
 }
 
 func (b *Bus) LeavesAtTimestampOpt(timestamp int) bool {
-	return timestamp % b.ID == 0
+	return timestamp%b.ID == 0
 }
 
 func (b *Bus) LeavesAtTimestampOptBig(timestamp uint64) bool {
-	return timestamp % uint64(b.ID) == 0
+	return timestamp%uint64(b.ID) == 0
 }
 
 func (bs *BusSchedule) IsSequentialDepartureBig(timestamp uint64) bool {
@@ -88,9 +88,9 @@ func (bs *BusSchedule) IsSequentialDepartureBig(timestamp uint64) bool {
 
 func (bs *BusSchedule) SuggestSequential(start uint64, maxBus int, step uint64) uint64 {
 	var t uint64
-	mainLoop:
-	for t = start + step;; t+=step {
-		busLoop:
+mainLoop:
+	for t = start + step; ; t += step {
+	busLoop:
 		for i, bus := range bs.Buses {
 			if i <= maxBus {
 				if !bus.LeavesAtTimestampOptBig(t + uint64(i)) {

@@ -9,10 +9,10 @@ type system struct {
 }
 
 type body struct {
-	inSystem *system
-	name string
-	orbits *body
-	satellites map[string]*body
+	inSystem         *system
+	name             string
+	orbits           *body
+	satellites       map[string]*body
 	distanceToCenter int
 }
 
@@ -26,14 +26,13 @@ func NewSystemFromInput(input []string) *system {
 	return ss
 }
 
-
 func (ss *system) getOrCreateBody(name string) (cosmicBody *body) {
 	if cosmicBody, ok := ss.bodies[name]; !ok {
 		cosmicBody = &body{
-			inSystem:   ss,
-			name:       name,
-			orbits:     nil,
-			satellites: map[string]*body{},
+			inSystem:         ss,
+			name:             name,
+			orbits:           nil,
+			satellites:       map[string]*body{},
 			distanceToCenter: -1,
 		}
 		ss.bodies[name] = cosmicBody
@@ -44,7 +43,6 @@ func (ss *system) getOrCreateBody(name string) (cosmicBody *body) {
 
 	return cosmicBody
 }
-
 
 func (ss *system) createOrbitBodyPair(bigger, smaller string) {
 	bigBody := ss.getOrCreateBody(bigger)

@@ -5,7 +5,6 @@ import (
 	"strconv"
 )
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 14, "\n")
 	computer := NewComputer(1)

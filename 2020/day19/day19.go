@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 19, "\n\n")
 	rules := strings.Split(input[0], "\n")
@@ -43,7 +42,6 @@ func DoGold() string {
 	//rm.RuleMap[11].RuleMatch = [][]int{{42, 31}, {42, 11, 31}}
 	rm.RuleMap[11].RuleMatch = [][]int{{42, 31}, {42, 42, 31, 31}}
 	// Basically the rule is "starts with rule 42, and ends with rule 31"
-
 
 	validCount := 0
 	for _, msg := range msgs {

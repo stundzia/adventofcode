@@ -75,7 +75,6 @@ func (c *card) getScore() int {
 	return score
 }
 
-
 func DoSilver() string {
 	lines, _ := utils.ReadInputFileContentsAsStringSlice(2021, 4, "\n")
 	winNumsStr := lines[0]
@@ -104,7 +103,7 @@ func DoSilver() string {
 		for _, c := range cards {
 			c.markNum(num)
 			if c.hasWon() {
-				return fmt.Sprintf("Solution: %d", c.getScore() * num)
+				return fmt.Sprintf("Solution: %d", c.getScore()*num)
 			}
 		}
 	}
@@ -140,7 +139,7 @@ func DoGold() string {
 			c.markNum(num)
 			if c.hasWon() {
 				if len(cards) == 1 {
-					return fmt.Sprintf("Solution: %d", c.getScore() * num)
+					return fmt.Sprintf("Solution: %d", c.getScore()*num)
 				} else {
 					delete(cards, k)
 				}

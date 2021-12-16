@@ -10,23 +10,22 @@ import (
 )
 
 type Computer struct {
-	Memory map[int]int64
-	Mask1 int64
-	Mask0 int64
+	Memory     map[int]int64
+	Mask1      int64
+	Mask0      int64
 	MemoryMask string
-	Version int
+	Version    int
 }
 
 var commandRegex = regexp.MustCompile("([a-z]{3,4})(\\[\\d+\\])?\\s=\\s(.*)")
 
-
 func NewComputer(version int) *Computer {
 	c := &Computer{
-		Memory: map[int]int64{},
-		Mask1:   0,
-		Mask0:   0,
+		Memory:     map[int]int64{},
+		Mask1:      0,
+		Mask0:      0,
 		MemoryMask: "",
-		Version: version,
+		Version:    version,
 	}
 	return c
 }
@@ -91,10 +90,10 @@ func (c *Computer) memoryMaskStringToMasks(mStr string) (masks []int64) {
 	bits := []string{"1", "0"}
 	varCount := int(power(2, floatingBitCount))
 	rand.Seed(time.Now().Unix())
-	mainLoop:
-	for i := 0;i < varCount; i++ {
-		varLoop:
-		for ;; {
+mainLoop:
+	for i := 0; i < varCount; i++ {
+	varLoop:
+		for {
 			m := c.MemoryMask
 			for i := 0; i < floatingBitCount; i++ {
 				m = strings.Replace(m, "X", bits[rand.Intn(len(bits))], 1)

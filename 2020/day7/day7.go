@@ -26,13 +26,13 @@ func parseRule(rule string) (bag string, ruleMap map[string]int) {
 func canContain(ruleMap map[string]map[string]int, bag string, bagToCheck string) bool {
 	allowed := map[string]interface{}{}
 	for k, _ := range ruleMap[bag] {
-		allowed[k] = struct {}{}
+		allowed[k] = struct{}{}
 	}
 	// TODO: don't brute force it
 	for i := 0; i < 20; i++ {
 		for k, _ := range allowed {
 			for al, _ := range ruleMap[k] {
-				allowed[al] = struct {}{}
+				allowed[al] = struct{}{}
 			}
 		}
 	}
@@ -45,7 +45,7 @@ func mustContainCount(ruleMap map[string]map[string]int, bag string) int {
 	totalCount := 0
 	for bag, count := range rules {
 		totalCount += count
-		if _, ok := ruleMap[bag];ok {
+		if _, ok := ruleMap[bag]; ok {
 			totalCount += count * mustContainCount(ruleMap, bag)
 		}
 	}

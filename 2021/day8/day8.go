@@ -101,7 +101,7 @@ func parseDigit(digitMap map[int]string, digitStr string) (map[int]string, int) 
 }
 
 func allLettersInOther(main string, other string) bool {
-	mainLoop:
+mainLoop:
 	for _, s := range main {
 		for _, o := range other {
 			if s == o {

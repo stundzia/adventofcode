@@ -3,23 +3,23 @@ package day12
 import "testing"
 
 func TestRotateCoords(t *testing.T) {
-	tcs := []struct{
-		test string
-		coords [2]int
-		degrees int
+	tcs := []struct {
+		test     string
+		coords   [2]int
+		degrees  int
 		expected [2]int
 	}{
 		{
 			"10,1 by 90 degrees",
-			[2]int{10,1},
+			[2]int{10, 1},
 			90,
-			[2]int{1,-10},
+			[2]int{1, -10},
 		},
 		{
 			"-4,5 by 180 degrees",
-			[2]int{-4,5},
+			[2]int{-4, 5},
 			180,
-			[2]int{4,-5},
+			[2]int{4, -5},
 		},
 	}
 	for _, tc := range tcs {
@@ -30,4 +30,3 @@ func TestRotateCoords(t *testing.T) {
 		})
 	}
 }
-

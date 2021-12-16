@@ -29,12 +29,12 @@ func (t *transmission) addBits(hexNum string) {
 }
 
 type packet struct {
-	version int64
-	typeID int64
-	val int64
+	version      int64
+	typeID       int64
+	val          int64
 	lengthTypeID int
-	lengthNum int64
-	subPackets []*packet
+	lengthNum    int64
+	subPackets   []*packet
 }
 
 func (p *packet) versionSum() int64 {
@@ -98,13 +98,13 @@ func (p *packet) getValue() int64 {
 func (t *transmission) parsePacket(offset int) (*packet, int) {
 	p := &packet{subPackets: []*packet{}}
 	endOffset := offset + 6
-	versionS := t.bits[offset:offset+3]
+	versionS := t.bits[offset : offset+3]
 	versionI, err := strconv.ParseInt(versionS, 2, 64)
 	if err != nil {
 		fmt.Println("version err: ", err)
 	}
 	p.version = versionI
-	typeS := t.bits[offset+3:offset+6]
+	typeS := t.bits[offset+3 : offset+6]
 	typeI, err := strconv.ParseInt(typeS, 2, 64)
 	if err != nil {
 		fmt.Println("type err: ", err)
@@ -113,8 +113,8 @@ func (t *transmission) parsePacket(offset int) (*packet, int) {
 
 	if p.typeID == packetTypeLiteralID {
 		content := ""
-		for i := offset +6;; i += 5 {
-			part := t.bits[i:i+5]
+		for i := offset + 6; ; i += 5 {
+			part := t.bits[i : i+5]
 			content += part[1:]
 			endOffset += 5
 			if part[0] == '0' {
@@ -126,10 +126,10 @@ func (t *transmission) parsePacket(offset int) (*packet, int) {
 			fmt.Println("val err: ", err)
 		}
 	} else {
-		p.lengthTypeID, _ = strconv.Atoi(string(t.bits[offset + 6]))
+		p.lengthTypeID, _ = strconv.Atoi(string(t.bits[offset+6]))
 		endOffset++
 		if p.lengthTypeID == 0 {
-			l := t.bits[offset +7: offset+22]
+			l := t.bits[offset+7 : offset+22]
 			endOffset += 15
 			p.lengthNum, _ = strconv.ParseInt(l, 2, 64)
 			end := endOffset + int(p.lengthNum)
@@ -141,10 +141,10 @@ func (t *transmission) parsePacket(offset int) (*packet, int) {
 			endOffset = end
 		}
 		if p.lengthTypeID == 1 {
-			l := t.bits[offset +7: offset+18]
+			l := t.bits[offset+7 : offset+18]
 			endOffset += 11
 			p.lengthNum, _ = strconv.ParseInt(l, 2, 64)
-			for i := 0; i < int(p.lengthNum);i++ {
+			for i := 0; i < int(p.lengthNum); i++ {
 				newPacket, newOff := t.parsePacket(endOffset)
 				p.subPackets = append(p.subPackets, newPacket)
 				endOffset = newOff

@@ -6,12 +6,11 @@ import (
 	"strconv"
 )
 
-
 func evaluateExpression(expression string) int {
 	//(9 * (7 * 7 * 2 + 3 + 8 + 8) + 5 + 5) + 9 * 6
 	operation := "+"
 	result := 0
-	for i:=0; i < len(expression);i++ {
+	for i := 0; i < len(expression); i++ {
 		switch string(expression[i]) {
 		case " ":
 			continue
@@ -19,8 +18,8 @@ func evaluateExpression(expression string) int {
 			parenth := ""
 			closing := 0
 			i++
-			mainFor:
-			for ;closing < 1; i++ {
+		mainFor:
+			for ; closing < 1; i++ {
 				switch string(expression[i]) {
 				case "(":
 					closing--
@@ -41,8 +40,12 @@ func evaluateExpression(expression string) int {
 					break
 				}
 			}
-			if operation == "+" {result += evaluateExpression(parenth)}
-			if operation == "*" {result *= evaluateExpression(parenth)}
+			if operation == "+" {
+				result += evaluateExpression(parenth)
+			}
+			if operation == "*" {
+				result *= evaluateExpression(parenth)
+			}
 			operation = ""
 			break
 		case "*":
@@ -51,14 +54,17 @@ func evaluateExpression(expression string) int {
 			operation = "+"
 		default:
 			num, _ := strconv.Atoi(string(expression[i]))
-			if operation == "+" {result += num}
-			if operation == "*" {result *= num}
+			if operation == "+" {
+				result += num
+			}
+			if operation == "*" {
+				result *= num
+			}
 			operation = ""
 		}
 	}
 	return result
 }
-
 
 func parenthesizeAddition(expression string) string {
 	done := false
@@ -109,22 +115,22 @@ func parenthesizeAddition(expression string) string {
 
 			beforeParenthesis := false
 			afterParenthesis := false
-			if beforeIndex - 1 >= 0 && string(expression[beforeIndex - 1]) == "(" {
+			if beforeIndex-1 >= 0 && string(expression[beforeIndex-1]) == "(" {
 				beforeParenthesis = true
 			}
-			if afterIndex + 1 < len(expression) && string(expression[afterIndex + 1]) == ")" {
+			if afterIndex+1 < len(expression) && string(expression[afterIndex+1]) == ")" {
 				afterParenthesis = true
 			}
 			if !afterParenthesis || !beforeParenthesis {
-				if beforeIndex - 1 < 0 {
+				if beforeIndex-1 < 0 {
 					expression = "(" + expression
 				} else {
 					expression = expression[:beforeIndex] + "(" + expression[beforeIndex:]
 				}
-				if afterIndex + 2 >= len(expression) {
+				if afterIndex+2 >= len(expression) {
 					expression = expression + ")"
 				} else {
-					expression = expression[:afterIndex + 2] + ")" + expression[afterIndex + 2:]
+					expression = expression[:afterIndex+2] + ")" + expression[afterIndex+2:]
 				}
 				done = true
 				break
@@ -136,7 +142,6 @@ func parenthesizeAddition(expression string) string {
 	}
 	return expression
 }
-
 
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 18, "\n")

@@ -5,9 +5,8 @@ import (
 	"strconv"
 )
 
-
 func getMassFuelReq(mass int) int {
-	return mass / 3 - 2
+	return mass/3 - 2
 }
 
 func DoSilver() string {

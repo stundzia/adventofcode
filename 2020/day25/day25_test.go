@@ -5,9 +5,9 @@ import (
 )
 
 func TestGetLoopSize(t *testing.T) {
-	tcs := []struct{
-		test string
-		key int
+	tcs := []struct {
+		test     string
+		key      int
 		expected int
 	}{
 		{
@@ -31,11 +31,10 @@ func TestGetLoopSize(t *testing.T) {
 	}
 }
 
-
 func TestTransform(t *testing.T) {
-	tcs := []struct{
-		test string
-		key int
+	tcs := []struct {
+		test     string
+		key      int
 		loopSize int
 		expected int
 	}{

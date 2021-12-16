@@ -89,8 +89,8 @@ func RotateCoordinates(x, y float64, degrees float64) (newX, newY float64) {
 	// y' = y*cos(a) - x*sin(a)
 	// x' = y*sin(a) + x*cos(a)
 	sinA, cosA := math.Sincos(degrees * math.Pi / 180)
-	newY = y * cosA - x * sinA
-	newX = y * sinA + x * cosA
+	newY = y*cosA - x*sinA
+	newX = y*sinA + x*cosA
 	return newX, newY
 }
 
@@ -125,7 +125,6 @@ func RemoveFromIntSlice(s []int, index int) []int {
 	s[index] = s[len(s)-1]
 	return s[:len(s)-1]
 }
-
 
 func RemoveFrom2DIntSlice(s [][]int, i int) [][]int {
 	s[i] = s[len(s)-1]

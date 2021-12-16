@@ -4,7 +4,7 @@ import "testing"
 
 func TestGetModuleFuelReq(t *testing.T) {
 	tcs := []struct {
-		testMass    int
+		testMass         int
 		expectedFuelMass int
 	}{
 		{

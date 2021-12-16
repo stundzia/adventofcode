@@ -10,7 +10,7 @@ import (
 
 func toPairs(el string) map[int]string {
 	res := map[int]string{}
-	for i := 0; i < len(el) - 1; i++ {
+	for i := 0; i < len(el)-1; i++ {
 		res[i] = string(el[i]) + string(el[i+1])
 	}
 	return res
@@ -100,8 +100,6 @@ func DoSilver() string {
 
 	return fmt.Sprintf("Solution: %d", getResFromPairMap(lm))
 }
-
-
 
 func DoGold() string {
 	lines, _ := utils.ReadInputFileContentsAsStringSlice(2021, 14, "\n")

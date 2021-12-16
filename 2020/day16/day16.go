@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 16, "\n\n")
 	rules := strings.Split(input[0], "\n")

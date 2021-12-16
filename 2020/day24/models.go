@@ -1,39 +1,38 @@
 package day24
 
 type Floor struct {
-	RefTile *Tile
-	TilesMap map[[2]int]*Tile
+	RefTile        *Tile
+	TilesMap       map[[2]int]*Tile
 	BlackTileCount int
 }
 
 type Tile struct {
-	Coords [2]int
+	Coords  [2]int
 	OnFloor *Floor
-	Black bool
+	Black   bool
 }
 
 func NewFloor() *Floor {
 	floor := &Floor{
 		TilesMap: map[[2]int]*Tile{},
 	}
-	floor.RefTile = floor.NewTile([2]int{0,0})
+	floor.RefTile = floor.NewTile([2]int{0, 0})
 	return floor
 }
 
-var CoordsDiffMap = map[string][2]int {
-	"e": {2,0},
-	"w": {-2,0},
-	"ne": {1,1},
-	"nw": {-1,1},
-	"se": {1,-1},
-	"sw": {-1,-1},
+var CoordsDiffMap = map[string][2]int{
+	"e":  {2, 0},
+	"w":  {-2, 0},
+	"ne": {1, 1},
+	"nw": {-1, 1},
+	"se": {1, -1},
+	"sw": {-1, -1},
 }
-
 
 func (f *Floor) TraverseTiles(path string) *Tile {
 	direction := ""
 	currentTile := f.RefTile
-	PathLoop:
+PathLoop:
 	for _, d := range path {
 		dStr := string(d)
 		if direction == "" {
@@ -98,8 +97,8 @@ func (t *Tile) GetAdjacentBlackCount() int {
 func (f *Floor) NewTile(coords [2]int) *Tile {
 	tile := &Tile{
 		OnFloor: f,
-		Coords: coords,
-		Black:      false,
+		Coords:  coords,
+		Black:   false,
 	}
 	f.TilesMap[coords] = tile
 	return tile

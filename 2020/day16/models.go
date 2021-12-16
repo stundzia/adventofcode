@@ -7,20 +7,19 @@ import (
 )
 
 type TicketValidator struct {
-	MyTicket []int
-	Rules map[string][2][2]int
-	NearbyTickets [][]int
+	MyTicket               []int
+	Rules                  map[string][2][2]int
+	NearbyTickets          [][]int
 	CompletelyInvalidCount int
-	ErrorRate int
+	ErrorRate              int
 }
 
 func parseRangeString(rs string) [2]int {
 	rangeParts := strings.Split(rs, "-")
 	low, _ := strconv.Atoi(rangeParts[0])
 	high, _ := strconv.Atoi(rangeParts[1])
-	return [2]int{low,high}
+	return [2]int{low, high}
 }
-
 
 func parseRuleLine(rl string) (rule string, ranges [2][2]int) {
 	rlParts := strings.Split(rl, ": ")
@@ -33,11 +32,11 @@ func parseRuleLine(rl string) (rule string, ranges [2][2]int) {
 
 func NewTicketValidator(myTicket []int, rules []string, nearbyTickets [][]int) *TicketValidator {
 	tv := &TicketValidator{
-		MyTicket:      myTicket,
-		Rules:         map[string][2][2]int{},
-		NearbyTickets: nearbyTickets,
+		MyTicket:               myTicket,
+		Rules:                  map[string][2][2]int{},
+		NearbyTickets:          nearbyTickets,
 		CompletelyInvalidCount: 0,
-		ErrorRate: 0,
+		ErrorRate:              0,
 	}
 	for _, rule := range rules {
 		key, value := parseRuleLine(rule)
@@ -67,7 +66,7 @@ func (tv *TicketValidator) valueValidForAnyRule(value int) (bool, int) {
 }
 
 func (tv *TicketValidator) hasCompletelyInvalidFields(ticket []int) bool {
-	valueLoop:
+valueLoop:
 	for _, val := range ticket {
 		for field, _ := range tv.Rules {
 			if tv.fieldValid(field, val) {
@@ -91,7 +90,6 @@ func (tv *TicketValidator) getErrorMetrics() {
 	}
 }
 
-
 func (tv *TicketValidator) discardInvalidTicket() bool {
 	for i, ticket := range tv.NearbyTickets {
 		if tv.hasCompletelyInvalidFields(ticket) {
@@ -104,7 +102,7 @@ func (tv *TicketValidator) discardInvalidTicket() bool {
 
 func (tv *TicketValidator) discardInvalidTickets() {
 	discarded := true
-	for ;discarded == true; {
+	for discarded == true {
 		discarded = tv.discardInvalidTicket()
 	}
 }
@@ -115,7 +113,7 @@ func (tv *TicketValidator) getFieldCandidates(fieldIndex int, ignore []string) (
 		validityCountMap[rule] = 0
 	}
 	for _, ticket := range tv.NearbyTickets {
-		for	rule, _ := range tv.Rules {
+		for rule, _ := range tv.Rules {
 			if tv.fieldValid(rule, ticket[fieldIndex]) {
 				validityCountMap[rule]++
 			}

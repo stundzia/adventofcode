@@ -10,7 +10,7 @@ import (
 )
 
 type manual struct {
-	dots map[string]int
+	dots         map[string]int
 	instructions []string
 }
 
@@ -25,7 +25,7 @@ func (m *manual) fold(foldLine string, coord int) {
 				}
 				m.dots[c] = 0
 				x = coord - (x - coord)
-				m.dots[fmt.Sprintf("%d,%d", x,y)] = v
+				m.dots[fmt.Sprintf("%d,%d", x, y)] = v
 			}
 		}
 	case "y":
@@ -37,7 +37,7 @@ func (m *manual) fold(foldLine string, coord int) {
 				}
 				m.dots[c] = 0
 				y = coord - (y - coord)
-				m.dots[fmt.Sprintf("%d,%d", x,y)] = v
+				m.dots[fmt.Sprintf("%d,%d", x, y)] = v
 			}
 		}
 	}
@@ -109,7 +109,7 @@ func newManual(lines []string) *manual {
 		}
 	}
 	m := &manual{
-		dots: map[string]int{},
+		dots:         map[string]int{},
 		instructions: instructions,
 	}
 	for _, c := range coords {

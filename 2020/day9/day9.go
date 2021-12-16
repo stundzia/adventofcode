@@ -10,10 +10,10 @@ func isValid(nums []int, n int, preamble int) bool {
 		return true
 	}
 	num := nums[n]
-	components := nums[n - preamble:n]
+	components := nums[n-preamble : n]
 	for i, c := range components {
 		for i2, c2 := range components {
-			if c + c2 == num && i != i2 {
+			if c+c2 == num && i != i2 {
 				return true
 			}
 		}
@@ -22,7 +22,7 @@ func isValid(nums []int, n int, preamble int) bool {
 }
 
 func contiguousSet(nums []int, n int, invalidNum int) (found bool, set []int) {
-	for ;; n++ {
+	for ; ; n++ {
 		set = append(set, nums[n])
 		sum := utils.SumIntSlice(set)
 		if sum < invalidNum {
@@ -37,7 +37,6 @@ func contiguousSet(nums []int, n int, invalidNum int) (found bool, set []int) {
 	}
 }
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsIntSlice(2020, 9, "\n")
 	for i, num := range input {
@@ -47,7 +46,6 @@ func DoSilver() string {
 	}
 	return strconv.Itoa(-1)
 }
-
 
 func DoGold() string {
 	invalidNum, _ := strconv.Atoi(DoSilver())

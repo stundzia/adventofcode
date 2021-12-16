@@ -24,10 +24,10 @@ func countWindowIncreases(nums []int) int {
 	count := 0
 	lastWindow := -1
 	for i, _ := range nums {
-		if i + 3 > len(nums) {
+		if i+3 > len(nums) {
 			break
 		}
-		currWindow := nums[i] + nums[i + 1] + nums[i + 2]
+		currWindow := nums[i] + nums[i+1] + nums[i+2]
 		if currWindow > lastWindow {
 			count++
 		}

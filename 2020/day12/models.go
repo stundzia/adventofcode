@@ -1,25 +1,22 @@
 package day12
 
-
 type Ship struct {
 	Heading int
-	Coords [2]int
+	Coords  [2]int
 }
 
 type ShipNav struct {
-	Ship *Ship
+	Ship     *Ship
 	Waypoint *Ship // Let's pretend the waypoint is an imaginary ship
 }
 
-
 func NewShip(startingHeading int, startingCoords [2]int) *Ship {
 	ship := &Ship{
-		Heading:     startingHeading,
-		Coords: startingCoords,
+		Heading: startingHeading,
+		Coords:  startingCoords,
 	}
 	return ship
 }
-
 
 func deltaFromHeading(heading int) (delta [2]int) {
 	mod := (heading / 90) % 4
@@ -99,7 +96,7 @@ func (s *Ship) RotateAroundCenter(degrees int) {
 	s.Coords = rotateCoords(s.Coords, degrees)
 }
 
-func (s *Ship) HandleNavCommand(direction string, value int)  {
+func (s *Ship) HandleNavCommand(direction string, value int) {
 	switch direction {
 	case "L":
 		s.Heading -= value
@@ -122,7 +119,7 @@ func (s *Ship) HandleNavCommand(direction string, value int)  {
 	}
 }
 
-func (sn *ShipNav) HandleNavCommand(direction string, value int)  {
+func (sn *ShipNav) HandleNavCommand(direction string, value int) {
 	switch direction {
 	case "L":
 		sn.Waypoint.RotateAroundCenter(-value)
@@ -138,7 +135,6 @@ func (sn *ShipNav) HandleNavCommand(direction string, value int)  {
 		}
 	}
 }
-
 
 func abs(num int) int {
 	if num < 0 {

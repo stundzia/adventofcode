@@ -9,51 +9,51 @@ import (
 )
 
 type Image struct {
-	Tiles []*Tile
-	Matrix [12][12]*Tile
+	Tiles           []*Tile
+	Matrix          [12][12]*Tile
 	FullImageMatrix [][]string
 }
 
 type Tile struct {
-	Img *Image
-	Id int
-	Coords [2]int
-	Matrix [][]string
-	Borders map[string]string
+	Img          *Image
+	Id           int
+	Coords       [2]int
+	Matrix       [][]string
+	Borders      map[string]string
 	PairingSlice []int
-	PairingMap map[string]*Tile
-	Adjacent map[string]*Tile
+	PairingMap   map[string]*Tile
+	Adjacent     map[string]*Tile
 }
 
-var oppositeSides = map[string]string {
-	"top": "bot",
-	"bot": "top",
-	"left": "right",
+var oppositeSides = map[string]string{
+	"top":   "bot",
+	"bot":   "top",
+	"left":  "right",
 	"right": "left",
 }
 
 var monsterPositionsFromTail = [][2]int{
-	{0,0},
-	{1,1},
-	{1,4},
-	{0,5},
-	{0,6},
-	{1,7},
-	{1,10},
-	{0,11},
-	{0,12},
-	{1,13},
-	{1,16},
-	{0,17},
-	{0,18},
-	{-1,18},
-	{0,19},
+	{0, 0},
+	{1, 1},
+	{1, 4},
+	{0, 5},
+	{0, 6},
+	{1, 7},
+	{1, 10},
+	{0, 11},
+	{0, 12},
+	{1, 13},
+	{1, 16},
+	{0, 17},
+	{0, 18},
+	{-1, 18},
+	{0, 19},
 }
 
 func NewImageFromInput(input []string) *Image {
 	img := &Image{
-		Tiles: []*Tile{},
-		Matrix: [12][12]*Tile{},
+		Tiles:           []*Tile{},
+		Matrix:          [12][12]*Tile{},
 		FullImageMatrix: [][]string{},
 	}
 	for _, ts := range input {
@@ -61,7 +61,6 @@ func NewImageFromInput(input []string) *Image {
 	}
 	return img
 }
-
 
 func (img *Image) GetCoordsValue(coords []int) string {
 	sideLen := len(img.FullImageMatrix)
@@ -72,9 +71,9 @@ func (img *Image) GetCoordsValue(coords []int) string {
 }
 
 func (t *Tile) RemoveBorders() {
-	t.Matrix = t.Matrix[1:len(t.Matrix) - 1]
+	t.Matrix = t.Matrix[1 : len(t.Matrix)-1]
 	for i, line := range t.Matrix {
-		t.Matrix[i] = line[1:len(line) -1]
+		t.Matrix[i] = line[1 : len(line)-1]
 	}
 }
 
@@ -97,7 +96,6 @@ func (img *Image) PixelIsMonsterTail(tailCoords []int) bool {
 	return true
 }
 
-
 func (img *Image) NewTileFromStringSlice(ss []string) *Tile {
 	idStr := ss[0][5:9]
 	id, _ := strconv.Atoi(idStr)
@@ -107,10 +105,10 @@ func (img *Image) NewTileFromStringSlice(ss []string) *Tile {
 	}
 
 	tile := &Tile{
-		Img: img,
-		Coords: [2]int{-1, -1},
-		Id:      id,
-		Matrix:  matrix,
+		Img:      img,
+		Coords:   [2]int{-1, -1},
+		Id:       id,
+		Matrix:   matrix,
 		Adjacent: map[string]*Tile{},
 	}
 	img.Tiles = append(img.Tiles, tile)
@@ -132,7 +130,7 @@ func (img *Image) PositionAllTiles() {
 	}
 }
 
-func (t *Tile) PositionTileAtSide(tile *Tile,side string) {
+func (t *Tile) PositionTileAtSide(tile *Tile, side string) {
 	switch side {
 	case "left":
 		t.Img.PositionTile(tile, [2]int{t.Coords[0], t.Coords[1] - 1})
@@ -148,14 +146,13 @@ func (t *Tile) PositionTileAtSide(tile *Tile,side string) {
 	tile.FindPotentialPairings()
 }
 
-
 func (t *Tile) PositionPairings() {
 	for side, otherTile := range t.PairingMap {
 		if t.Adjacent[side] != nil {
 			continue
 		}
 		aligned := false
-		for i := 0;aligned == false;i++ {
+		for i := 0; aligned == false; i++ {
 			if t.Borders[side] == otherTile.Borders[oppositeSides[side]] {
 				aligned = true
 				t.PositionTileAtSide(otherTile, side)
@@ -190,22 +187,21 @@ func (t *Tile) GetBorders(forceRecalc bool) map[string]string {
 		return t.Borders
 	}
 	top := strings.Join(t.Matrix[0], "")
-	bot := strings.Join(t.Matrix[len(t.Matrix) - 1], "")
+	bot := strings.Join(t.Matrix[len(t.Matrix)-1], "")
 	left := ""
 	right := ""
 	for _, line := range t.Matrix {
 		left += line[0]
-		right += line[len(line) - 1]
+		right += line[len(line)-1]
 	}
 	t.Borders = map[string]string{
-		"top": top,
-		"bot": bot,
-		"left": left,
+		"top":   top,
+		"bot":   bot,
+		"left":  left,
 		"right": right,
 	}
 	return t.Borders
 }
-
 
 func (t *Tile) Flip(vertically bool) {
 	if vertically {
@@ -234,7 +230,6 @@ func (t *Tile) RotateClockwise() {
 	t.Matrix = newMatrix
 	t.GetBorders(true)
 }
-
 
 func (t *Tile) FindPotentialPairings() {
 	pairingMap := map[string]*Tile{}
@@ -275,7 +270,6 @@ func (img *Image) FormFullImageMatrix(printIt bool) {
 	}
 }
 
-
 func (img *Image) Flip(vertically bool) {
 	if vertically {
 		img.FullImageMatrix = utils.ReverseStringSliceSlice(img.FullImageMatrix)
@@ -285,7 +279,6 @@ func (img *Image) Flip(vertically bool) {
 		img.FullImageMatrix[i] = utils.ReverseStringSlice(line)
 	}
 }
-
 
 func (img *Image) RotateClockwise() {
 	cols := [][]string{}

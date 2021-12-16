@@ -40,17 +40,16 @@ func DoSilver() string {
 	runInstructions := map[int]interface{}{}
 	var next int
 	var acc int
-	for ;; {
+	for {
 		if _, ok := runInstructions[next]; ok {
 			return strconv.Itoa(acc)
 		} else {
-			runInstructions[next] = struct {}{}
+			runInstructions[next] = struct{}{}
 		}
 		acc, next = handleInstruction(input, acc, next)
 	}
 	return strconv.Itoa(len(input))
 }
-
 
 func runUntilLoopCountReached(instructions []string, change int, loopCount int) (acc int, cleanTerminate bool) {
 	op, _ := parseInstruction(instructions[change])
@@ -61,7 +60,7 @@ func runUntilLoopCountReached(instructions []string, change int, loopCount int) 
 	}
 	runInstructions := map[int]int{}
 	var next int
-	for ;; {
+	for {
 		if next == len(instructions) {
 			fmt.Println("Clean terminate")
 			cleanTerminate = true

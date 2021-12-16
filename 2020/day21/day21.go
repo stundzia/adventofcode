@@ -7,15 +7,13 @@ import (
 	"strings"
 )
 
-
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 21, "\n")
 	menu := NewMenu(input)
 	for i := 0; i < 5; i++ {
 		menu.formIngredientAllergenMaps()
 	}
-	return fmt.Sprintf("%d", menu.countUnmappedIngredients())  // 2265
+	return fmt.Sprintf("%d", menu.countUnmappedIngredients()) // 2265
 }
 
 func DoGold() string {

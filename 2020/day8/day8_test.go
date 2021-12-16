@@ -5,10 +5,10 @@ import (
 )
 
 func TestParseInstruction(t *testing.T) {
-	tcs := []struct{
+	tcs := []struct {
 		Case string
-		Op string
-		Arg int
+		Op   string
+		Arg  int
 	}{
 		{
 			"acc +50",

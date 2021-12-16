@@ -12,18 +12,18 @@ import (
 
 type caveSystem struct {
 	pathsMux sync.Mutex
-	paths map[string]struct{}
-	start *cave
-	end *cave
-	caves map[string]*cave
+	paths    map[string]struct{}
+	start    *cave
+	end      *cave
+	caves    map[string]*cave
 }
 
 type cave struct {
-	caveSystem *caveSystem
-	name string
+	caveSystem  *caveSystem
+	name        string
 	connections map[string]*cave
-	big bool
-	paths map[string]struct{}
+	big         bool
+	paths       map[string]struct{}
 }
 
 func newCaveSystem(lines []string) *caveSystem {
@@ -70,11 +70,11 @@ func (cs *caveSystem) newCave(name string) *cave {
 		big = true
 	}
 	c := &cave{
-		caveSystem: cs,
-		name: name,
-		big: big,
+		caveSystem:  cs,
+		name:        name,
+		big:         big,
 		connections: map[string]*cave{},
-		paths: map[string]struct{}{},
+		paths:       map[string]struct{}{},
 	}
 	return c
 }
@@ -155,11 +155,11 @@ func (cs *caveSystem) tryRandomPath(sem *semaphore.Weighted) bool {
 	path := []*cave{cs.start}
 	current := cs.start
 	visited := map[*cave]struct{}{}
-	for i := 0;;i++ {
+	for i := 0; ; i++ {
 		if current == cs.end {
 			break
 		}
-		last := path[len(path) - 1]
+		last := path[len(path)-1]
 		for _, v := range current.connections {
 			if _, wasVisited := visited[v]; wasVisited {
 				continue
@@ -218,7 +218,7 @@ func (c *cave) getPathsToExit() {
 	}
 	paths := map[string]struct{}{}
 	for _, con := range c.connections {
-		pathLoop:
+	pathLoop:
 		for path, _ := range con.paths {
 			if !c.big {
 				parts := strings.Split(path, "-")
@@ -229,7 +229,7 @@ func (c *cave) getPathsToExit() {
 				}
 			}
 			if c.caveSystem.validatePathNoStart(c.name + "-" + path) {
-				paths[c.name + "-" + path] = struct{}{}
+				paths[c.name+"-"+path] = struct{}{}
 			}
 		}
 	}
@@ -255,7 +255,7 @@ func (c *cave) getPathsToExit2() {
 				}
 			}
 			if c.caveSystem.validatePathNoStartPart2(c.name + "-" + path) {
-				paths[c.name + "-" + path] = struct{}{}
+				paths[c.name+"-"+path] = struct{}{}
 			}
 		}
 	}

@@ -10,44 +10,44 @@ import (
 
 type octoGrid struct {
 	flashCount int
-	octopi map[string]*octopus
+	octopi     map[string]*octopus
 }
 
 type octopus struct {
 	octoGrid *octoGrid
-	x int
-	y int
-	energy int
+	x        int
+	y        int
+	energy   int
 	adjacent map[string]*octopus
-	flashed bool
+	flashed  bool
 }
 
 func (og *octoGrid) assignNeighbours() {
 	for coords, octo := range og.octopi {
 		x, y := utils.CoordsStrToInts(coords)
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x+1, y)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x+1,y)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x+1, y)] = nei
 		}
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x+1, y+1)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x+1,y+1)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x+1, y+1)] = nei
 		}
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x+1, y-1)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x+1,y-1)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x+1, y-1)] = nei
 		}
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x-1, y)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x-1,y)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x-1, y)] = nei
 		}
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x-1, y+1)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x-1,y+1)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x-1, y+1)] = nei
 		}
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x-1, y-1)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x-1,y-1)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x-1, y-1)] = nei
 		}
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x, y+1)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x,y+1)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x, y+1)] = nei
 		}
 		if nei, exists := og.octopi[fmt.Sprintf("%d,%d", x, y-1)]; exists {
-			octo.adjacent[fmt.Sprintf("%d,%d", x,y-1)] = nei
+			octo.adjacent[fmt.Sprintf("%d,%d", x, y-1)] = nei
 		}
 	}
 }
@@ -96,11 +96,11 @@ func newOctoGrid(nums []string) *octoGrid {
 		valsStr := strings.Split(line, "")
 		for x, val := range valsStr {
 			valInt, _ := strconv.Atoi(val)
-			og.octopi[fmt.Sprintf("%d,%d", x,y)] = &octopus{
+			og.octopi[fmt.Sprintf("%d,%d", x, y)] = &octopus{
 				octoGrid: og,
 				x:        x,
 				y:        y,
-				energy: valInt,
+				energy:   valInt,
 				adjacent: map[string]*octopus{},
 			}
 		}
@@ -115,7 +115,7 @@ func DoSilver() string {
 	for i := 0; i < 100; i++ {
 		og.doStep()
 	}
-	return fmt.Sprintf("Solution: %d",og.flashCount)
+	return fmt.Sprintf("Solution: %d", og.flashCount)
 }
 
 func DoGold() string {

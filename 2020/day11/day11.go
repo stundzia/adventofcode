@@ -5,7 +5,6 @@ import (
 	"strconv"
 )
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 11, "\n")
 	ss := NewSeatingSpace(input)
@@ -21,7 +20,6 @@ func DoSilver() string {
 	}
 	return strconv.Itoa(ss.CountTaken())
 }
-
 
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 11, "\n")

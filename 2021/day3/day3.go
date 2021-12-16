@@ -10,7 +10,7 @@ import (
 func part1(nums []string) int {
 	var gamma string
 	var epsilon string
-	for i := 0; i < len(nums[0]); i ++ {
+	for i := 0; i < len(nums[0]); i++ {
 		ones := 0
 		zeros := 0
 		for _, n := range nums {
@@ -41,7 +41,7 @@ func part2(nums []string) int {
 	var O2 string
 	var CO2 string
 
-	for i := 0; i < len(nums[0]); i ++ {
+	for i := 0; i < len(nums[0]); i++ {
 		ones := []string{}
 		zeros := []string{}
 		for _, n := range validO2 {
@@ -63,7 +63,7 @@ func part2(nums []string) int {
 		}
 	}
 
-	for i := 0; i < len(nums[0]); i ++ {
+	for i := 0; i < len(nums[0]); i++ {
 		ones := []string{}
 		zeros := []string{}
 		for _, n := range validCO2 {

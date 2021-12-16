@@ -153,7 +153,6 @@ func getRangeSlice(begin, end int) []int {
 	return res
 }
 
-
 func DoSilver() string {
 	lines, _ := utils.ReadInputFileContentsAsStringSlice(2021, 5, "\n")
 	return fmt.Sprintf("Solution: %d", part1(lines))

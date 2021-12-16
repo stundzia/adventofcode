@@ -5,9 +5,9 @@ import (
 )
 
 func TestIsValid(t *testing.T) {
-	tcs := []struct{
-		test string
-		pass int
+	tcs := []struct {
+		test     string
+		pass     int
 		expected bool
 	}{
 		{
@@ -37,9 +37,9 @@ func TestIsValid(t *testing.T) {
 }
 
 func TestIsValidV2(t *testing.T) {
-	tcs := []struct{
-		test string
-		pass int
+	tcs := []struct {
+		test     string
+		pass     int
 		expected bool
 	}{
 		{

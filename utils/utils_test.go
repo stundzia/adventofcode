@@ -5,26 +5,25 @@ import (
 	"testing"
 )
 
-
 func TestSumIntSlice(t *testing.T) {
 	tcs := []struct {
-		testInput    []int
+		testInput      []int
 		expectedOutput int
 	}{
 		{
-			[]int{1,2,3},
+			[]int{1, 2, 3},
 			6,
 		},
 		{
-			[]int{55,77,0,22,0,-20},
+			[]int{55, 77, 0, 22, 0, -20},
 			134,
 		},
 		{
-			[]int{-33,33,44,-44},
+			[]int{-33, 33, 44, -44},
 			0,
 		},
 		{
-			[]int{0,0,0,0,0,0,0},
+			[]int{0, 0, 0, 0, 0, 0, 0},
 			0,
 		},
 	}
@@ -53,7 +52,6 @@ func TestSlicesIntEqual(t *testing.T) {
 	}
 }
 
-
 func TestSliceStringToInt(t *testing.T) {
 	testSlice := []string{"123", "44", "55", "-29", "42"}
 	expected := []int{123, 44, 55, -29, 42}
@@ -62,15 +60,14 @@ func TestSliceStringToInt(t *testing.T) {
 	}
 }
 
-
 func TestRotateCoords(t *testing.T) {
-	tcs := []struct{
-		test string
-		X float64
-		Y float64
+	tcs := []struct {
+		test    string
+		X       float64
+		Y       float64
 		degrees float64
-		newX float64
-		newY float64
+		newX    float64
+		newY    float64
 	}{
 		{
 			"10,1 by 90 degrees",

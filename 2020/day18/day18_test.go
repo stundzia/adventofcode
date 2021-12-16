@@ -5,9 +5,9 @@ import (
 )
 
 func TestEvaluateExpresionWithParenthesizedAddition(t *testing.T) {
-	tcs := []struct{
-		test string
-		input string
+	tcs := []struct {
+		test     string
+		input    string
 		expected int
 	}{
 		{

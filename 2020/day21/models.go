@@ -6,29 +6,29 @@ import (
 )
 
 type Menu struct {
-	Items []*MenuItem
-	AllergenicIngredients []string
-	IngredientsAllergensMap map[string]string
+	Items                          []*MenuItem
+	AllergenicIngredients          []string
+	IngredientsAllergensMap        map[string]string
 	AllergenMustBeInIngredientsMap map[string]map[string]struct{}
-	CanBeAllergensMap map[string]struct{}
-	InertIngredientsMap map[string]struct{}
+	CanBeAllergensMap              map[string]struct{}
+	InertIngredientsMap            map[string]struct{}
 }
 
 type MenuItem struct {
-	id int
-	menu *Menu
+	id          int
+	menu        *Menu
 	ingredients map[string]struct{}
-	allergens map[string]struct{}
+	allergens   map[string]struct{}
 }
 
 func NewMenu(menuList []string) *Menu {
 	menu := &Menu{
-		Items:                 []*MenuItem{},
-		AllergenicIngredients: []string{},
-		IngredientsAllergensMap: map[string]string{},
+		Items:                          []*MenuItem{},
+		AllergenicIngredients:          []string{},
+		IngredientsAllergensMap:        map[string]string{},
 		AllergenMustBeInIngredientsMap: map[string]map[string]struct{}{},
-		CanBeAllergensMap: map[string]struct{}{},
-		InertIngredientsMap: map[string]struct{}{},
+		CanBeAllergensMap:              map[string]struct{}{},
+		InertIngredientsMap:            map[string]struct{}{},
 	}
 	for id, line := range menuList {
 		menu.parseIngredientsAllergens(line, id)
@@ -36,24 +36,23 @@ func NewMenu(menuList []string) *Menu {
 	return menu
 }
 
-
 func (m *Menu) parseIngredientsAllergens(line string, id int) {
 	parts := strings.Split(line, " (")
 	ingredients := strings.Split(parts[0], " ")
-	allergens := strings.Split(parts[1][9:len(parts[1]) - 1], ", ")
+	allergens := strings.Split(parts[1][9:len(parts[1])-1], ", ")
 	ingredientsMap := map[string]struct{}{}
 	allergensMap := map[string]struct{}{}
 	for _, ing := range ingredients {
-		ingredientsMap[ing] = struct {}{}
+		ingredientsMap[ing] = struct{}{}
 	}
 	for _, al := range allergens {
-		allergensMap[al] = struct {}{}
+		allergensMap[al] = struct{}{}
 	}
 	mi := &MenuItem{
-		id: id,
-		menu: m,
+		id:          id,
+		menu:        m,
 		ingredients: ingredientsMap,
-		allergens:  allergensMap,
+		allergens:   allergensMap,
 	}
 	m.Items = append(m.Items, mi)
 }
@@ -81,7 +80,6 @@ func (m *Menu) countUnmappedIngredients() int {
 	return count
 }
 
-
 func (mi *MenuItem) UpdateAllergensFromOtherItem(other *MenuItem) {
 	if mi.id == other.id {
 		return
@@ -92,7 +90,7 @@ func (mi *MenuItem) UpdateAllergensFromOtherItem(other *MenuItem) {
 		}
 	}
 	for oa, _ := range other.allergens {
-		mi.allergens[oa] = struct {}{}
+		mi.allergens[oa] = struct{}{}
 	}
 }
 
@@ -123,7 +121,7 @@ func (mi *MenuItem) unknownIngredientsAllergens() (ingredients, allergens map[st
 	knownAls := map[string]interface{}{}
 	for ing, _ := range mi.ingredients {
 		if knownAl, ok := mi.menu.IngredientsAllergensMap[ing]; ok {
-			knownAls[knownAl] = struct {}{}
+			knownAls[knownAl] = struct{}{}
 			continue
 		}
 		ingredients[ing] = struct{}{}
@@ -154,7 +152,6 @@ func (mi *MenuItem) updateAllergenMustBeInIngredientsMap() {
 		}
 	}
 }
-
 
 func (m *Menu) formIngredientAllergenMaps() {
 	for _, mi := range m.Items {

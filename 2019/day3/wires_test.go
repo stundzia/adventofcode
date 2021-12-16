@@ -5,11 +5,11 @@ import (
 )
 
 func TestParseCommand(t *testing.T) {
-	tcs := []struct{
-		test string
+	tcs := []struct {
+		test             string
 		expectedDistance int
-		expectedDY int
-		expectedDX int
+		expectedDY       int
+		expectedDX       int
 	}{
 		{
 			"U234",
@@ -46,10 +46,10 @@ func TestParseCommand(t *testing.T) {
 }
 
 func TestMarkPosition(t *testing.T) {
-	tcs := []struct{
-		test string
-		signature uint8
-		position uint8
+	tcs := []struct {
+		test         string
+		signature    uint8
+		position     uint8
 		expectedMark uint8
 	}{
 		{

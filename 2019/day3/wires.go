@@ -7,21 +7,21 @@ import (
 )
 
 type Grid struct {
-	gridMap map[[2]int]uint8
+	gridMap                  map[[2]int]uint8
 	gridMapIntersectionSteps map[[2]int]int
 }
 
 type Wire struct {
-	signature uint8
-	grid *Grid
-	x int
-	y int
+	signature  uint8
+	grid       *Grid
+	x          int
+	y          int
 	stepsTaken int
 }
 
 func NewGrid() *Grid {
 	grid := &Grid{
-		gridMap: map[[2]int]uint8{},
+		gridMap:                  map[[2]int]uint8{},
 		gridMapIntersectionSteps: map[[2]int]int{},
 	}
 	return grid
@@ -61,10 +61,10 @@ func (w *Wire) handleCommandInGridMap(command string) {
 	for i := 0; i < dist; i++ {
 		w.x += dX
 		w.y += dY
-		if val, ok := w.grid.gridMap[[2]int{w.x,w.y}]; ok {
-			w.grid.gridMap[[2]int{w.x,w.y}] = w.markPosition(val)
+		if val, ok := w.grid.gridMap[[2]int{w.x, w.y}]; ok {
+			w.grid.gridMap[[2]int{w.x, w.y}] = w.markPosition(val)
 		} else {
-			w.grid.gridMap[[2]int{w.x,w.y}] = w.signature
+			w.grid.gridMap[[2]int{w.x, w.y}] = w.signature
 		}
 	}
 }
@@ -75,14 +75,14 @@ func (w *Wire) handleCommandInGridMapWithSteps(command string) {
 		w.x += dX
 		w.y += dY
 		w.stepsTaken++
-		if val, ok := w.grid.gridMap[[2]int{w.x,w.y}]; ok {
-			w.grid.gridMap[[2]int{w.x,w.y}] = w.markPosition(val)
-			if val & w.signature != w.signature {
-				w.grid.gridMapIntersectionSteps[[2]int{w.x,w.y}] += w.stepsTaken
+		if val, ok := w.grid.gridMap[[2]int{w.x, w.y}]; ok {
+			w.grid.gridMap[[2]int{w.x, w.y}] = w.markPosition(val)
+			if val&w.signature != w.signature {
+				w.grid.gridMapIntersectionSteps[[2]int{w.x, w.y}] += w.stepsTaken
 			}
 		} else {
-			w.grid.gridMap[[2]int{w.x,w.y}] = w.signature
-			w.grid.gridMapIntersectionSteps[[2]int{w.x,w.y}] = w.stepsTaken
+			w.grid.gridMap[[2]int{w.x, w.y}] = w.signature
+			w.grid.gridMapIntersectionSteps[[2]int{w.x, w.y}] = w.stepsTaken
 		}
 	}
 }

@@ -14,19 +14,19 @@ type lavaCaveMap struct {
 }
 
 type point struct {
-	val int
-	coordsX int
-	coordsY int
-	n *point
-	s *point
-	w *point
-	e *point
-	lowRisk bool
+	val       int
+	coordsX   int
+	coordsY   int
+	n         *point
+	s         *point
+	w         *point
+	e         *point
+	lowRisk   bool
 	basinSize int
 }
 
 func (lcm *lavaCaveMap) addPoint(x, y, val int) {
-	lcm.points[fmt.Sprintf("%d,%d", x,y)] = &point{
+	lcm.points[fmt.Sprintf("%d,%d", x, y)] = &point{
 		val:     val,
 		coordsX: x,
 		coordsY: y,
@@ -47,7 +47,7 @@ func newLavaCaveMap(lines []string) *lavaCaveMap {
 		}
 	}
 	for _, point := range lcm.points {
-		nCoords := fmt.Sprintf("%d,%d", point.coordsX, point.coordsY - 1)
+		nCoords := fmt.Sprintf("%d,%d", point.coordsX, point.coordsY-1)
 		lowRisk := true
 		if n, ok := lcm.points[nCoords]; ok {
 			point.n = n
@@ -55,21 +55,21 @@ func newLavaCaveMap(lines []string) *lavaCaveMap {
 				lowRisk = false
 			}
 		}
-		sCoords := fmt.Sprintf("%d,%d", point.coordsX, point.coordsY + 1)
+		sCoords := fmt.Sprintf("%d,%d", point.coordsX, point.coordsY+1)
 		if s, ok := lcm.points[sCoords]; ok {
 			point.s = s
 			if point.val >= s.val {
 				lowRisk = false
 			}
 		}
-		wCoords := fmt.Sprintf("%d,%d", point.coordsX - 1, point.coordsY)
+		wCoords := fmt.Sprintf("%d,%d", point.coordsX-1, point.coordsY)
 		if w, ok := lcm.points[wCoords]; ok {
 			point.w = w
 			if point.val >= w.val {
 				lowRisk = false
 			}
 		}
-		eCoords := fmt.Sprintf("%d,%d", point.coordsX + 1, point.coordsY)
+		eCoords := fmt.Sprintf("%d,%d", point.coordsX+1, point.coordsY)
 		if e, ok := lcm.points[eCoords]; ok {
 			point.e = e
 			if point.val >= e.val {
@@ -176,5 +176,5 @@ func DoGold() string {
 		}
 	}
 	sort.Ints(basins)
-	return fmt.Sprintf("Solution: %d", basins[len(basins) - 1] * basins[len(basins) - 2] * basins[len(basins) - 3])
+	return fmt.Sprintf("Solution: %d", basins[len(basins)-1]*basins[len(basins)-2]*basins[len(basins)-3])
 }

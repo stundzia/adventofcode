@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 20, "\n\n")
 	img := NewImageFromInput(input)
@@ -50,11 +49,10 @@ func DoGold() string {
 
 	candidate := cornerTiles[2]
 	candidate.FindPotentialPairings()
-	img.PositionTile(candidate, [2]int{0,0}) // yup, cheated and found it by trial and error (properly aligned corner)
+	img.PositionTile(candidate, [2]int{0, 0}) // yup, cheated and found it by trial and error (properly aligned corner)
 	for i := 0; i < 100; i++ {
 		img.PositionAllTiles()
 	}
-
 
 	for _, tile := range img.Tiles {
 		tile.RemoveBorders()
@@ -66,11 +64,11 @@ func DoGold() string {
 	monsterCount, seaCount := 0, 0
 
 	for i := 0; i < 22222; i++ {
-		if rand.Int() % 4 == 0 {
+		if rand.Int()%4 == 0 {
 			img.RotateClockwise()
 		}
-		if rand.Int() % 3 == 0 {
-			if rand.Int() % 2 == 0 {
+		if rand.Int()%3 == 0 {
+			if rand.Int()%2 == 0 {
 				img.Flip(true)
 			} else {
 				img.Flip(false)
@@ -80,7 +78,7 @@ func DoGold() string {
 		for y, line := range img.FullImageMatrix {
 			for x, pixel := range line {
 				if pixel == "#" {
-					img.MarkIfMonster([]int{y,x})
+					img.MarkIfMonster([]int{y, x})
 				}
 			}
 		}

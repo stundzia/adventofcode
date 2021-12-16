@@ -7,28 +7,28 @@ import (
 	"github.com/stundzia/adventofcode/utils"
 )
 
-var chunkOpenerCloserMap = map[rune]rune {
+var chunkOpenerCloserMap = map[rune]rune{
 	'[': ']',
 	'(': ')',
 	'{': '}',
 	'<': '>',
 }
 
-var chunkCloserOpenerMap = map[rune]rune {
+var chunkCloserOpenerMap = map[rune]rune{
 	']': '[',
 	')': '(',
 	'}': '{',
 	'>': '<',
 }
 
-var scoreMapPart1 = map[rune]int {
+var scoreMapPart1 = map[rune]int{
 	')': 3,
 	']': 57,
 	'}': 1197,
 	'>': 25137,
 }
 
-var scoreMapPart2 = map[rune]int {
+var scoreMapPart2 = map[rune]int{
 	')': 1,
 	']': 2,
 	'}': 3,
@@ -37,9 +37,8 @@ var scoreMapPart2 = map[rune]int {
 
 type openerStack struct {
 	openers []rune
-	count int
+	count   int
 }
-
 
 func (s *openerStack) Push(c rune) {
 	s.openers = append(s.openers[:s.count], c)

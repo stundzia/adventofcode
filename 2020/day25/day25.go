@@ -8,11 +8,10 @@ import (
 const SubjectDivider = 20201227
 const SubjectNumber = 7
 
-
 func getLoopSize(pKey int) int {
 	loopSize := 0
 	val := 1
-	for ; val != pKey; {
+	for val != pKey {
 		val *= SubjectNumber
 		val %= SubjectDivider
 		loopSize++

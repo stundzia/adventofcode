@@ -30,7 +30,6 @@ func moveCost(moveSize int) int {
 	return cost
 }
 
-
 func DoSilver() string {
 	nums, _ := utils.ReadInputFileContentsAsIntSlice(2021, 7, ",")
 	lowest := 9999999999

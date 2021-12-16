@@ -6,15 +6,14 @@ import (
 	"github.com/stundzia/adventofcode/utils"
 )
 
-
 func DoSilver() string {
 	opcodes, _ := utils.ReadInputFileContentsAsIntSlice(2019, 5, ",")
 	comp := computer.NewComputer(opcodes)
 	go comp.Run()
 	comp.InputPipe <- 1
 	var lastOutput int
-	for ;; {
-		lastOutput = <- comp.OutputPipe
+	for {
+		lastOutput = <-comp.OutputPipe
 		if !comp.Running {
 			break
 		}
@@ -28,8 +27,8 @@ func DoGold() string {
 	go comp.Run()
 	comp.InputPipe <- 5
 	var lastOutput int
-	for ;; {
-		lastOutput = <- comp.OutputPipe
+	for {
+		lastOutput = <-comp.OutputPipe
 		if !comp.Running {
 			break
 		}

@@ -17,10 +17,9 @@ func parseSeat(seat string) (row, column, seatID int) {
 	columnInt64, _ := strconv.ParseInt(columnBi, 2, 64)
 	column = int(columnInt64)
 
-	seatID = row * 8 + column
+	seatID = row*8 + column
 	return row, column, seatID
 }
-
 
 func DoSilver() string {
 	maxSeatID := 0
@@ -40,10 +39,10 @@ func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2020, 5, "\n")
 	for _, seat := range input {
 		_, _, seatID := parseSeat(seat)
-		seats[seatID] = struct {}{}
+		seats[seatID] = struct{}{}
 	}
 	for i := 40; i < maxSeatID; i++ {
-		if _, ok := seats[i];!ok {
+		if _, ok := seats[i]; !ok {
 			return strconv.Itoa(i)
 		}
 	}

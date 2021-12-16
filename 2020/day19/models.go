@@ -9,20 +9,18 @@ import (
 
 type RuleMatcher struct {
 	RuleMap map[int]*Rule
-	MaxLen int
+	MaxLen  int
 }
-
 
 type Rule struct {
-	RM *RuleMatcher
+	RM              *RuleMatcher
 	MatchingStrings []string
-	RuleString string
-	StringMatch string
-	RuleMatch [][]int
-	MaxLen int
-	MinLen int
+	RuleString      string
+	StringMatch     string
+	RuleMatch       [][]int
+	MaxLen          int
+	MinLen          int
 }
-
 
 func (r *Rule) MessageValid(msg string) bool {
 	if len(r.MatchingStrings) == 0 {
@@ -47,7 +45,7 @@ func (rm *RuleMatcher) MessageValidPart2v2(msg string) bool {
 	msgLen := len(msg)
 	valid := false
 
-	if msgLen % rrMax != 0 || msgLen < rrMin {
+	if msgLen%rrMax != 0 || msgLen < rrMin {
 		return false
 	}
 
@@ -59,8 +57,7 @@ func (rm *RuleMatcher) MessageValidPart2v2(msg string) bool {
 	leftMatchedCount := 0
 	rightMatchedCount := 0
 
-
-	mainLoop:
+mainLoop:
 	for i := lrMin; i <= msgLen; i++ {
 		check := msg[lastMatchEnd:i]
 		checkLen := len(check)
@@ -105,7 +102,6 @@ func (rm *RuleMatcher) MessageValidPart2v2(msg string) bool {
 
 	return valid
 }
-
 
 func (r *Rule) GetMatchingStrings() []string {
 	if len(r.MatchingStrings) > 0 {

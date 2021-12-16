@@ -6,9 +6,9 @@ import (
 )
 
 type submarine struct {
-	Depth int
+	Depth    int
 	Position int
-	Aim int
+	Aim      int
 }
 
 func (s *submarine) handleCommand(command string) {

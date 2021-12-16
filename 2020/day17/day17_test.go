@@ -10,11 +10,11 @@ func TestPockedDimension(t *testing.T) {
 		"..#",
 		"###",
 	}
-	tcs := []struct{
-		test string
-		input []string
-		cycles int
-		expected int
+	tcs := []struct {
+		test       string
+		input      []string
+		cycles     int
+		expected   int
 		dimensions int
 	}{
 		{
@@ -45,7 +45,7 @@ func TestPockedDimension(t *testing.T) {
 			var res int
 			if tc.dimensions == 4 {
 				res = pd.Get4DActiveCount()
-			}  else {
+			} else {
 				res = pd.GetActiveCount()
 			}
 			if res != tc.expected {

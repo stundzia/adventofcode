@@ -6,14 +6,14 @@ import (
 )
 
 func TestSample(t *testing.T) {
-	tcs := []struct{
-		test string
-		slice []int
+	tcs := []struct {
+		test     string
+		slice    []int
 		expected int
 	}{
 		{
 			"Slice: 1,3,2 expected sum: 6",
-			[]int{1,3,2},
+			[]int{1, 3, 2},
 			6,
 		},
 	}
