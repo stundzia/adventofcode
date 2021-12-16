@@ -98,7 +98,7 @@ func DoSilver() string {
 		lm = pairMapStep(lm, ruleMap)
 	}
 
-	return fmt.Sprintf("Solution: %d", getResFromPairMap(lm)) // +- 1
+	return fmt.Sprintf("Solution: %d", getResFromPairMap(lm))
 }
 
 
@@ -117,5 +117,5 @@ func DoGold() string {
 		lm = pairMapStep(lm, ruleMap)
 	}
 
-	return fmt.Sprintf("Solution: %d", getResFromPairMap(lm)) // +- 1
+	return fmt.Sprintf("Solution: %d", getResFromPairMap(lm))
 }
