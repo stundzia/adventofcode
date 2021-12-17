@@ -1,0 +1,17 @@
+package day20
+
+import (
+	"fmt"
+
+	"github.com/stundzia/adventofcode/utils"
+)
+
+func DoSilver() string {
+	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 20, "\n")
+	return fmt.Sprintf("Solution: %d", len(nums))
+}
+
+func DoGold() string {
+	nums, _ := utils.ReadInputFileContentsAsStringSlice(2021, 20, "\n")
+	return fmt.Sprintf("Solution: %d", len(nums))
+}
