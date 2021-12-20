@@ -85,6 +85,20 @@ func CoordsStrToInts(coords string) (x, y int) {
 	return x, y
 }
 
+// Coords3DStrToInts - converts 3D coords string of format "x,y,z" to ints and returns x,y,z as ints.
+func Coords3DStrToInts(coords string) (x, y, z int) {
+	coordsSlice := strings.Split(coords, ",")
+	x, _ = strconv.Atoi(coordsSlice[0])
+	y, _ = strconv.Atoi(coordsSlice[1])
+	z, _ = strconv.Atoi(coordsSlice[2])
+	return x, y, z
+}
+
+// Coords3DIntsToStr - converts 3D coords to string format "x,y,z".
+func Coords3DIntsToStr(x, y, z int) string {
+	return fmt.Sprintf("%d,%d,%d", x, y, z)
+}
+
 func RotateCoordinates(x, y float64, degrees float64) (newX, newY float64) {
 	// y' = y*cos(a) - x*sin(a)
 	// x' = y*sin(a) + x*cos(a)
