@@ -2,10 +2,11 @@ package day7
 
 import (
 	"fmt"
-	"github.com/stundzia/adventofcode/2019/computer"
-	"github.com/stundzia/adventofcode/utils"
 	"sync"
 	"time"
+
+	"github.com/stundzia/adventofcode/2019/computer"
+	"github.com/stundzia/adventofcode/utils"
 )
 
 type Amps struct {
@@ -42,10 +43,6 @@ func (as *Amps) TrySequence(seq []int) int {
 }
 
 func (as *Amps) TrySequenceWithFeedBackLoop(seq []int, resChannel chan int) int {
-	//as.A.computer.OutputPipe = as.B.computer.InputPipe
-	//as.B.computer.OutputPipe = as.C.computer.InputPipe
-	//as.C.computer.OutputPipe = as.D.computer.InputPipe
-	//as.D.computer.OutputPipe = as.E.computer.InputPipe
 	AB := make(chan int, 5)
 	BC := make(chan int, 5)
 	CD := make(chan int, 5)
@@ -67,19 +64,6 @@ func (as *Amps) TrySequenceWithFeedBackLoop(seq []int, resChannel chan int) int 
 	as.E.computer.OutputPipe = EA
 	as.A.computer.InputPipe = EA
 
-	//as.A.computer.InputPipe = as.E.computer.OutputPipe
-	//as.B.computer.InputPipe = as.A.computer.OutputPipe
-	//as.C.computer.InputPipe = as.B.computer.OutputPipe
-	//as.D.computer.InputPipe = as.C.computer.OutputPipe
-	//as.E.computer.InputPipe = as.D.computer.OutputPipe
-
-	//as.A.computer.InputPipe <- 0
-	//as.A.computer.InputPipe <- seq[0] + 5
-	//as.B.computer.InputPipe <- seq[1] + 5
-	//as.C.computer.InputPipe <- seq[2] + 5
-	//as.D.computer.InputPipe <- seq[3] + 5
-	//as.E.computer.InputPipe <- seq[4] + 5
-
 	as.A.computer.FirstInputs = []int{seq[0] + 5, 0}
 	as.B.computer.FirstInputs = []int{seq[1] + 5}
 	as.C.computer.FirstInputs = []int{seq[2] + 5}
@@ -91,7 +75,11 @@ func (as *Amps) TrySequenceWithFeedBackLoop(seq []int, resChannel chan int) int 
 	go as.D.computer.Run()
 	go as.E.computer.Run()
 
-	for as.A.computer.Running.Load() || as.B.computer.Running.Load() || as.C.computer.Running.Load() || as.D.computer.Running.Load() || as.E.computer.Running.Load() {
+	// TODO: bit hacky here, need to give time for the computers to spin up or the below condition might evaluate
+	//  to true, because the goroutines haven't had a chance to start yet
+	time.Sleep(10 * time.Millisecond)
+
+	for as.E.computer.Running.Load() {
 		time.Sleep(10 * time.Millisecond)
 	}
 	res := <-as.E.computer.OutputPipe
@@ -134,7 +122,6 @@ func getBestSequenceV2(opcodes []int) int {
 	waitChan := make(chan struct{})
 	go func() {
 		wg.Wait()
-		fmt.Println("DONE!!!!!")
 		waitChan <- struct{}{}
 	}()
 Main:
@@ -144,11 +131,10 @@ Main:
 			if res > maxSignal {
 				maxSignal = res
 			}
+			wg.Done()
 		case <-waitChan:
 			break Main
 		default:
-			time.Sleep(5 * time.Second)
-			fmt.Println("Current max signal: ", maxSignal)
 		}
 	}
 

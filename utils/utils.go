@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"gonum.org/v1/gonum/stat/combin"
 	"io/ioutil"
 	"math"
 	"path/filepath"
@@ -97,6 +98,30 @@ func Coords3DStrToInts(coords string) (x, y, z int) {
 // Coords3DIntsToStr - converts 3D coords to string format "x,y,z".
 func Coords3DIntsToStr(x, y, z int) string {
 	return fmt.Sprintf("%d,%d,%d", x, y, z)
+}
+
+func Min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func GenUniqueCombos(n, k int) [][]int {
+	res := [][]int{}
+	for i := 0; i < combin.NumPermutations(n, k); i++ {
+		comb := make([]int, k)
+		combin.IndexToPermutation(comb, i, n, k)
+		res = append(res, comb)
+	}
+	return res
 }
 
 func RotateCoordinates(x, y float64, degrees float64) (newX, newY float64) {

@@ -2,15 +2,17 @@ package computer
 
 import (
 	"fmt"
+	"sync/atomic"
 )
 
 const opcodeAddressSpaceSize = 2048
 
 type Computer struct {
-	Opcodes    [opcodeAddressSpaceSize]int
-	InputPipe  chan int
-	OutputPipe chan int
-	Running    bool
+	Opcodes     [opcodeAddressSpaceSize]int
+	FirstInputs []int
+	InputPipe   chan int
+	OutputPipe  chan int
+	Running     atomic.Bool
 }
 
 func NewComputer(opcodes []int) *Computer {
@@ -19,9 +21,10 @@ func NewComputer(opcodes []int) *Computer {
 		opArray[i] = val
 	}
 	return &Computer{
-		Opcodes:    opArray,
-		InputPipe:  make(chan int, 1),
-		OutputPipe: make(chan int, 1),
+		Opcodes:     opArray,
+		FirstInputs: []int{},
+		InputPipe:   make(chan int, 2),
+		OutputPipe:  make(chan int, 2),
 	}
 }
 
@@ -35,7 +38,7 @@ func getOperationAndParameterModes(opcode int) (op, param1, param2, param3 int) 
 
 func (c *Computer) Run() (int, error) {
 	position := 0
-	c.Running = true
+	c.Running.Store(true)
 
 main:
 	for {
@@ -84,7 +87,14 @@ main:
 
 		case 3:
 			address := c.Opcodes[position+1]
-			c.Opcodes[address] = <-c.InputPipe
+			var v int
+			if len(c.FirstInputs) > 0 {
+				v = c.FirstInputs[0]
+				c.FirstInputs = c.FirstInputs[1:]
+			} else {
+				v = <-c.InputPipe
+			}
+			c.Opcodes[address] = v
 			position += 2
 			break
 
@@ -186,6 +196,6 @@ main:
 		}
 	}
 
-	c.Running = false
+	c.Running.Store(false)
 	return c.Opcodes[0], nil
 }
