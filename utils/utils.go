@@ -37,13 +37,55 @@ func ReadInputFileContentsAsIntSlice(year int, day int, sep string) ([]int, erro
 	}
 	res := make([]int, len(strSlice))
 	for i, val := range strSlice {
-		num, _ := strconv.Atoi(val)
-		//if err != nil {
-		//	continue
-		//	return nil, err
-		//}
+		num, err := strconv.Atoi(val)
+		if err != nil {
+			return nil, err
+		}
 		res[i] = num
 	}
+	return res, err
+}
+
+// ReadInputFileContentsAsIntSliceLines - reads input as separated and grouped by blank lines ints, e.g.:
+// ```
+//
+//	1000
+//	2000
+//	3000
+//
+//	4000
+//
+//	5000
+//	6000
+//
+//	7000
+//	8000
+//	9000
+//
+//	10000
+//
+// ```
+// Would return a 2D int slice [][]int{{1000, 2000, 3000}, {4000}, {5000, 6000}, {7000, 8000, 9000}, {10000}}
+func ReadInputFileContentsAsIntSliceLines(year int, day int) ([][]int, error) {
+	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
+	if err != nil {
+		return nil, err
+	}
+	res := [][]int{}
+	l := []int{}
+	for _, val := range strSlice {
+		if val == "" {
+			res = append(res, l)
+			l = []int{}
+			continue
+		}
+		num, err := strconv.Atoi(val)
+		if err != nil {
+			return nil, err
+		}
+		l = append(l, num)
+	}
+	res = append(res, l)
 	return res, err
 }
 
