@@ -37,10 +37,11 @@ func ReadInputFileContentsAsIntSlice(year int, day int, sep string) ([]int, erro
 	}
 	res := make([]int, len(strSlice))
 	for i, val := range strSlice {
-		num, err := strconv.Atoi(val)
-		if err != nil {
-			return nil, err
-		}
+		num, _ := strconv.Atoi(val)
+		//if err != nil {
+		//	continue
+		//	return nil, err
+		//}
 		res[i] = num
 	}
 	return res, err
