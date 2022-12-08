@@ -89,6 +89,28 @@ func ReadInputFileContentsAsIntSliceLines(year int, day int) ([][]int, error) {
 	return res, err
 }
 
+func ReadInputFileContentsAsIntGrid(year int, day int) ([][]int, error) {
+	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
+	if err != nil {
+		return nil, err
+	}
+	res := [][]int{}
+	for _, line := range strSlice {
+		l := []int{}
+		for _, v := range line {
+			val := string(v)
+			num, err := strconv.Atoi(val)
+			if err != nil {
+				fmt.Println(err)
+				return nil, err
+			}
+			l = append(l, num)
+		}
+		res = append(res, l)
+	}
+	return res, err
+}
+
 // SumIntSlice returns the sum of all integers in an integer slice.
 func SumIntSlice(slice []int) int {
 	var res int
