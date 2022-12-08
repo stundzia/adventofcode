@@ -2,6 +2,8 @@ package day8
 
 import (
 	"fmt"
+	"sync"
+	"sync/atomic"
 
 	"github.com/stundzia/adventofcode/utils"
 )
@@ -46,12 +48,18 @@ func (t *tree) isVisible() bool {
 			break
 		}
 	}
+	if lefVisible {
+		return true
+	}
 	rightVisible := true
 	for x := t.forest.maxX; x > t.X; x-- {
 		if t.forest.trees[coordsStr(x, t.Y)].height >= t.height {
 			rightVisible = false
 			break
 		}
+	}
+	if rightVisible {
+		return true
 	}
 	topVisible := true
 	for y := 0; y < t.Y; y++ {
@@ -60,6 +68,9 @@ func (t *tree) isVisible() bool {
 			break
 		}
 	}
+	if topVisible {
+		return true
+	}
 	bottomVisible := true
 	for y := t.forest.maxY; y > t.Y; y-- {
 		if t.forest.trees[coordsStr(t.X, y)].height >= t.height {
@@ -67,11 +78,14 @@ func (t *tree) isVisible() bool {
 			break
 		}
 	}
+	if bottomVisible {
+		return true
+	}
 
-	return rightVisible || lefVisible || bottomVisible || topVisible
+	return false
 }
 
-func (t *tree) scenicScore() int {
+func (t *tree) scenicScore() int64 {
 	resXR := 0
 	for x := t.X + 1; x <= t.forest.maxX; x++ {
 		resXR++
@@ -104,33 +118,45 @@ func (t *tree) scenicScore() int {
 		}
 	}
 
-	return resXL * resXR * resYU * resYD
+	return int64(resXL * resXR * resYU * resYD)
 }
 
 func DoSilver() string {
 	grid, _ := utils.ReadInputFileContentsAsIntGrid(2022, 8)
 	forest := newForest(grid)
-	res := 0
+	res := &atomic.Uint32{}
+	wg := sync.WaitGroup{}
 	for _, t := range forest.trees {
-		if t.isVisible() {
-			res++
-		}
+		wg.Add(1)
+		go func(tr *tree) {
+			if tr.isVisible() {
+				res.Add(1)
+			}
+			wg.Done()
+		}(t)
 	}
+	wg.Wait()
 
-	return fmt.Sprintf("Solution: %d", res)
+	return fmt.Sprintf("Solution: %d", res.Load())
 }
 
 func DoGold() string {
 	grid, _ := utils.ReadInputFileContentsAsIntGrid(2022, 8)
 	forest := newForest(grid)
 
-	res := 0
+	res := atomic.Int64{}
+	wg := sync.WaitGroup{}
 	for _, t := range forest.trees {
-		scenic := t.scenicScore()
-		if scenic > res {
-			res = scenic
-		}
+		wg.Add(1)
+		go func(tr *tree) {
+			scenic := tr.scenicScore()
+			if scenic > res.Load() {
+				res.Store(scenic)
+			}
+			wg.Done()
+		}(t)
 	}
+	wg.Wait()
 
-	return fmt.Sprintf("Solution: %d", res)
+	return fmt.Sprintf("Solution: %d", res.Load())
 }
