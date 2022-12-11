@@ -12,6 +12,7 @@ import (
 
 type monkeyGroup struct {
 	monkeys map[int]*monkey
+	allDivs int
 }
 
 type monkey struct {
@@ -21,6 +22,7 @@ type monkey struct {
 	items           []int
 	operation       func(int) int
 	test            func(int) bool
+	testDiv         int
 	testTrueTarget  int
 	testFalseTarget int
 }
@@ -38,6 +40,11 @@ func (mg *monkeyGroup) parseMonkey(lines []string) {
 	m.operation = parseOperation(strings.Split(lines[2], ": ")[1])
 	m.test = parseTest(strings.Split(lines[3], ": ")[1])
 
+	testParts := strings.Split(lines[3], " ")
+	div, _ := strconv.Atoi(testParts[len(testParts)-1])
+	m.testDiv = div
+	mg.allDivs *= div
+
 	l4parts := strings.Split(lines[4], " ")
 	l5parts := strings.Split(lines[5], " ")
 	trueTarget, _ := strconv.Atoi(l4parts[len(l4parts)-1])
@@ -45,8 +52,6 @@ func (mg *monkeyGroup) parseMonkey(lines []string) {
 	m.testTrueTarget = trueTarget
 	m.testFalseTarget = falseTarget
 
-	fmt.Println(startingItemsStr)
-	fmt.Println(m)
 	mg.monkeys[id] = m
 }
 
@@ -98,7 +103,7 @@ func (m *monkey) handleItemPart2() {
 	item := m.items[0]
 	m.items = m.items[1:]
 	item = m.operation(item)
-	fmt.Println("item: ", item)
+	item = item % m.group.allDivs
 	if m.test(item) {
 		m.group.monkeys[m.testTrueTarget].items = append(m.group.monkeys[m.testTrueTarget].items, item)
 		return
@@ -134,9 +139,8 @@ func parseTest(test string) func(int) bool {
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2022, 11, "\n")
 	monkeyLines := []string{}
-	mg := monkeyGroup{map[int]*monkey{}}
+	mg := monkeyGroup{map[int]*monkey{}, 1}
 	for _, l := range input {
-		fmt.Println("l : ", l)
 		if l == "" {
 			mg.parseMonkey(monkeyLines)
 			monkeyLines = []string{}
@@ -169,9 +173,8 @@ func DoSilver() string {
 func DoGold() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2022, 11, "\n")
 	monkeyLines := []string{}
-	mg := monkeyGroup{map[int]*monkey{}}
+	mg := monkeyGroup{map[int]*monkey{}, 1}
 	for _, l := range input {
-		fmt.Println("l : ", l)
 		if l == "" {
 			mg.parseMonkey(monkeyLines)
 			monkeyLines = []string{}
@@ -180,8 +183,7 @@ func DoGold() string {
 		monkeyLines = append(monkeyLines, l)
 	}
 	mg.parseMonkey(monkeyLines)
-
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mg.doRoundPart2()
 	}
 
