@@ -114,34 +114,6 @@ func (n *node) mapPossiblePaths() {
 	}
 }
 
-//func (em *elevationMap) validateAsPath(coords string) bool {
-//	if v, f := em.nodes[coords]; f {
-//		if v-1 <= em.currentElevation() {
-//			if _, f := em.visited[coords]; !f {
-//				return true
-//			}
-//		}
-//	}
-//
-//	return false
-//}
-
-//func (em *elevationMap) goToLocation(coords string) {
-//	em.steps++
-//	em.current = coords
-//	em.visited[coords] = struct{}{}
-//}
-
-func getMaxVal(m map[*node]int) int {
-	max := 0
-	for _, v := range m {
-		if v > max {
-			max = v
-		}
-	}
-	return max
-}
-
 func (n *node) mapPathToTarget() bool {
 	updated := false
 	if n.em.target == n {
@@ -153,7 +125,7 @@ func (n *node) mapPathToTarget() bool {
 			if _, f := no.pathToTarget[n]; f {
 				continue
 			}
-			if len(n.pathToTarget) > 0 && len(no.pathToTarget) > len(n.pathToTarget)+1 {
+			if len(n.pathToTarget) > 0 && len(n.pathToTarget) <= len(no.pathToTarget)+1 {
 				continue
 			}
 			n.pathToTarget = map[*node]int{}
@@ -172,12 +144,6 @@ func (n *node) mapPathToTarget() bool {
 	return updated
 }
 
-//func (em *elevationMap) adjacentCoords() {
-//	res := map[string]int{}
-//	x, y := utils.CoordsStrToInts(em.current)
-//	res[utils.CoordsIntsToStr(x+1,y)] = em.
-//}
-
 func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2022, 12, "\n")
 
@@ -186,17 +152,17 @@ func DoSilver() string {
 
 	elMap := newElevationMap(input)
 
-	for i := 0; i < 10288; i++ {
+	for {
 		updated := 0
 		for _, n := range elMap.nodes {
 			if n.mapPathToTarget() {
 				updated++
 			}
 		}
-		fmt.Println("updated: ", updated)
 		if updated == 0 {
 			break
 		}
+		updated = 0
 	}
 
 	return fmt.Sprintf("Solution: %d", len(elMap.start.pathToTarget)-1)
@@ -210,17 +176,17 @@ func DoGold() string {
 
 	elMap := newElevationMap(input)
 
-	for i := 0; i < 10288; i++ {
+	for {
 		updated := 0
 		for _, n := range elMap.nodes {
 			if n.mapPathToTarget() {
 				updated++
 			}
 		}
-		fmt.Println("updated: ", updated)
 		if updated == 0 {
 			break
 		}
+		updated = 0
 	}
 
 	min := math.MaxInt
