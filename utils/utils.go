@@ -151,6 +151,11 @@ func CoordsStrToInts(coords string) (x, y int) {
 	return x, y
 }
 
+// CoordsIntsToStr - converts coords ints (x,y) to string format "x,y".
+func CoordsIntsToStr(x, y int) string {
+	return fmt.Sprintf("%d,%d", x, y)
+}
+
 // Coords3DStrToInts - converts 3D coords string of format "x,y,z" to ints and returns x,y,z as ints.
 func Coords3DStrToInts(coords string) (x, y, z int) {
 	coordsSlice := strings.Split(coords, ",")
@@ -293,6 +298,17 @@ func GetMaxFromIntSlice(nums []int) int {
 	return max
 }
 
+// GetMinFromIntSlice - returns the smallest integer from a slice.
+func GetMinFromIntSlice(nums []int) int {
+	min := math.MaxInt
+	for _, num := range nums {
+		if num < min {
+			min = num
+		}
+	}
+	return min
+}
+
 // GetMaxAbsFromIntSlice - returns the biggest absolute value of an integer from a slice.
 func GetMaxAbsFromIntSlice(nums []int) int {
 	max := 0
@@ -302,6 +318,17 @@ func GetMaxAbsFromIntSlice(nums []int) int {
 		}
 	}
 	return max
+}
+
+// GetMinAbsFromIntSlice - returns the smallest absolute value of an integer from a slice.
+func GetMinAbsFromIntSlice(nums []int) int {
+	min := math.MaxInt
+	for _, num := range nums {
+		if AbsInt(num) < min {
+			min = AbsInt(min)
+		}
+	}
+	return min
 }
 
 // AbsInt - returns absolute value of an integer (if num < 0 returns -num).
