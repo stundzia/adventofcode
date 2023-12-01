@@ -25,17 +25,16 @@ func DoSilver() string {
 	input, _ := utils.ReadInputFileContentsAsStringSlice(2023, 1, "\n")
 	res := 0
 	for _, l := range input {
-		first := -1
-		last := -1
+		var first int32
+		var last int32
 		for _, c := range l {
-			d, err := strconv.Atoi(string(c))
-			if err != nil {
+			if c < 49 || c > 57 {
 				continue
 			}
-			if first == -1 {
-				first = d
+			if first == 0 {
+				first = c - 48
 			}
-			last = d
+			last = c - 48
 		}
 		add, err := strconv.Atoi(fmt.Sprintf("%d%d", first, last))
 		if err != nil {
