@@ -2,6 +2,7 @@ package day6
 
 import (
 	"fmt"
+	"github.com/stundzia/adventofcode/utils"
 	"runtime"
 	"sync"
 	"sync/atomic"
@@ -23,7 +24,7 @@ func (r *race) calcWinCombos() {
 
 func (r *race) calcWinCombosAsync() {
 	wg := &sync.WaitGroup{}
-	ranges := splitIntoRangesInclusive(r.time, runtime.NumCPU())
+	ranges := utils.SplitIntoRangesInclusive(0, r.time, runtime.NumCPU())
 	for _, rg := range ranges {
 		wg.Add(1)
 		go r.calcComboRange(wg, rg[0], rg[1])
@@ -38,20 +39,6 @@ func (r *race) calcComboRange(wg *sync.WaitGroup, iMin, iMax int) {
 			r.winCombos.Add(1)
 		}
 	}
-}
-
-func splitIntoRangesInclusive(i, count int) [][2]int {
-	res := [][2]int{}
-	rangeSize := i / count
-	for it := 0; it < i; it += rangeSize {
-		end := it + rangeSize
-		if end >= i {
-			end = i + 1
-		}
-		res = append(res, [2]int{it, end - 1})
-	}
-
-	return res
 }
 
 func DoSilver() string {

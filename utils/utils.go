@@ -89,6 +89,25 @@ func ReadInputFileContentsAsIntSliceLines(year int, day int) ([][]int, error) {
 	return res, err
 }
 
+func ReadInputFileContentsAsStringSliceLines(year int, day int) ([][]string, error) {
+	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
+	if err != nil {
+		return nil, err
+	}
+	res := [][]string{}
+	l := []string{}
+	for _, val := range strSlice {
+		if val == "" {
+			res = append(res, l)
+			l = []string{}
+			continue
+		}
+		l = append(l, val)
+	}
+	res = append(res, l)
+	return res, err
+}
+
 func ReadInputFileContentsAsIntGrid(year int, day int) ([][]int, error) {
 	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
 	if err != nil {
@@ -109,6 +128,74 @@ func ReadInputFileContentsAsIntGrid(year int, day int) ([][]int, error) {
 		res = append(res, l)
 	}
 	return res, err
+}
+
+func ReadInputFileContentsAsStringGrid(year int, day int) ([][]string, error) {
+	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
+	if err != nil {
+		return nil, err
+	}
+	res := [][]string{}
+	for _, line := range strSlice {
+		l := []string{}
+		for _, v := range line {
+			val := string(v)
+			l = append(l, val)
+		}
+		res = append(res, l)
+	}
+	return res, err
+}
+
+func ReadInputFileContentsAsIntGridWithSeparator(year int, day int, sep string) ([][]int, error) {
+	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
+	if err != nil {
+		return nil, err
+	}
+	res := [][]int{}
+	for _, line := range strSlice {
+		l := []int{}
+		lineVals := strings.Split(line, sep)
+		for _, val := range lineVals {
+			num, err := strconv.Atoi(val)
+			if err != nil {
+				fmt.Println(err)
+				return nil, err
+			}
+			l = append(l, num)
+		}
+		res = append(res, l)
+	}
+	return res, err
+}
+
+// SplitIntoRangesInclusive - splits a range of integers into provided count of ranges meant to be used inclusively (no overlap).
+// E.g. SplitIntoRangesInclusive(10, 50, 4) would return:
+// [10 19]
+// [20 29]
+// [30 39]
+// [40 50]
+func SplitIntoRangesInclusive(rangeStart, rangeEnd, count int) [][2]int {
+	var res [][2]int
+	if rangeStart > rangeEnd || count < 1 {
+		return nil
+	}
+	if (rangeEnd - rangeStart) < count {
+		return nil
+	}
+	if count == 1 {
+		return [][2]int{[2]int{rangeStart, rangeEnd}}
+	}
+	rangeSize := (rangeEnd - rangeStart) / count
+	for it := rangeStart; it < rangeEnd; it += rangeSize {
+		end := it + rangeSize
+		if end >= rangeEnd {
+			end = rangeEnd + 1
+		}
+		res = append(res, [2]int{it, end - 1})
+	}
+
+	return res
 }
 
 // SumIntSlice returns the sum of all integers in an integer slice.
