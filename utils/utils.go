@@ -46,6 +46,27 @@ func ReadInputFileContentsAsIntSlice(year int, day int, sep string) ([]int, erro
 	return res, err
 }
 
+func ReadInputFileContentsAsIntSlices(year int, day int, sep string) ([][]int, error) {
+	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
+	if err != nil {
+		return nil, err
+	}
+	res := make([][]int, len(strSlice))
+	for i, val := range strSlice {
+		l := []int{}
+		parts := strings.Split(val, sep)
+		for _, n := range parts {
+			num, err := strconv.Atoi(n)
+			if err != nil {
+				return nil, err
+			}
+			l = append(l, num)
+		}
+		res[i] = l
+	}
+	return res, err
+}
+
 // ReadInputFileContentsAsIntSliceLines - reads input as separated and grouped by blank lines ints, e.g.:
 // ```
 //
@@ -140,6 +161,23 @@ func ReadInputFileContentsAsStringGrid(year int, day int) ([][]string, error) {
 		l := []string{}
 		for _, v := range line {
 			val := string(v)
+			l = append(l, val)
+		}
+		res = append(res, l)
+	}
+	return res, err
+}
+
+func ReadInputFileContentsAsCharGrid(year int, day int) ([][]rune, error) {
+	strSlice, err := ReadInputFileContentsAsStringSlice(year, day, "\n")
+	if err != nil {
+		return nil, err
+	}
+	res := [][]rune{}
+	for _, line := range strSlice {
+		l := []rune{}
+		for _, v := range line {
+			val := v
 			l = append(l, val)
 		}
 		res = append(res, l)
