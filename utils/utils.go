@@ -290,6 +290,15 @@ func Coords3DStrToInts(coords string) (x, y, z int) {
 	return x, y, z
 }
 
+func SliceStrAllEqual(sl []string, val string) bool {
+	for _, v := range sl {
+		if v != val {
+			return false
+		}
+	}
+	return true
+}
+
 // Coords3DIntsToStr - converts 3D coords to string format "x,y,z".
 func Coords3DIntsToStr(x, y, z int) string {
 	return fmt.Sprintf("%d,%d,%d", x, y, z)
