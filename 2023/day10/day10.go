@@ -3,6 +3,8 @@ package day10
 import (
 	"fmt"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/stundzia/adventofcode/utils"
 )
@@ -14,10 +16,12 @@ type pipeLand struct {
 
 type pipePart struct {
 	pipeType   string
+	sType      string
 	x          int
 	y          int
 	xy         string
 	partOfLoop bool
+	inLoop     bool
 	n          *pipePart
 	s          *pipePart
 	w          *pipePart
@@ -108,6 +112,96 @@ func (pl *pipeLand) moveThrougPipeLoop() int {
 	return stepsTaken
 }
 
+func (pl *pipeLand) calcIfInLoop(pp *pipePart) bool {
+	hLeft := 0
+	for x := 0; x < pp.x; x++ {
+		if n := pl.pipesMap[utils.CoordsIntsToStr(x, pp.y)]; n.partOfLoop {
+			if n.pipeType == "|" || n.sType == "|" || n.pipeType == "L" || n.sType == "L" || n.pipeType == "J" || n.sType == "J" {
+				if x < pp.x {
+					hLeft++
+				}
+				if x > pp.x {
+					hLeft++
+				}
+			}
+		}
+	}
+	if hLeft%2 == 1 {
+		pp.inLoop = true
+	}
+
+	return pp.inLoop
+}
+
+func (pl *pipeLand) moveThrougPipeLoopP2() int {
+	var start *pipePart
+	for _, pp := range pl.pipesMap {
+		if pp.pipeType == "S" {
+			start = pp
+			break
+		}
+	}
+
+	next := start.getNext(start)
+	if start.n != nil && start.s != nil {
+		start.sType = "|"
+	}
+	if start.e != nil && start.w != nil {
+		start.sType = "-"
+	}
+	if start.e != nil && start.n != nil {
+		start.sType = "L"
+	}
+	if start.w != nil && start.n != nil {
+		start.sType = "J"
+	}
+
+	stepsTaken := 1
+	last := start
+	current := next
+
+	for current != start {
+		current.partOfLoop = true
+		stepsTaken++
+		previous := current
+		current = current.getNext(last)
+		last = previous
+	}
+
+	for coords, pp := range pl.pipesMap {
+		x, y := utils.CoordsStrToInts(coords)
+		if pp.pipeType == "S" {
+			pl.input[y][x] = "S"
+			continue
+		}
+		if pp.partOfLoop {
+			pl.input[y][x] = "*"
+		} else {
+			if pl.calcIfInLoop(pp) {
+				pl.input[y][x] = "I"
+				continue
+			}
+			pl.input[y][x] = "."
+		}
+	}
+	f, err := os.Create("visual_dump.txt")
+	if err != nil {
+		log.Fatal("oh bugger")
+	}
+	for _, l := range pl.input {
+		f.WriteString(strings.Join(l, "") + "\n")
+	}
+
+	res := 0
+	for _, pp := range pl.pipesMap {
+		if pp.inLoop {
+			res++
+		}
+	}
+
+	return res
+}
+
 func (pp *pipePart) getNext(last *pipePart) *pipePart {
 	if pp.n != nil && pp.n != last {
 		return pp.n
@@ -135,8 +229,11 @@ func DoSilver() string {
 }
 
 func DoGold() string {
+	input, _ := utils.ReadInputFileContentsAsStringGrid(2023, 10)
 
-	res := 0
+	pl := parsePipeland(input)
+	res := pl.moveThrougPipeLoopP2()
 
+	// 357 < res < 752
 	return fmt.Sprintf("Solution: %d", res)
 }
